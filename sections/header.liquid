@@ -11,9 +11,9 @@
 <div class="header-logo">
   <a href="{{ routes.root_url }}">
 
-    {% if settings.brand_logo != blank %}
+    {% if shop.brand.logo != blank %}
       <img
-        src="{{ settings.brand_logo | image_url: width: 500 }}"
+        src="{{ shop.brand.logo | image_url: width: 500 }}"
         alt="{{ shop.name }}"
         loading="lazy"
       >
@@ -22,12 +22,6 @@
     {% endif %}
 
   </a>
-<div>
-  <a>aaa</a>
-  {{ settings.social_instagram_link }}
-{{ settings.social_facebook_link }}
-{{ settings.social_tiktok_link }}
-{{ settings.social_youtube_link }}
 </div>
 </div>
 
