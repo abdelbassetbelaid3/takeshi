@@ -14,7 +14,7 @@
       {% endif %}
 
       <p class="footer-text">
-        {{ section.settings.about }}
+       {{ shop.brand.slogan }}
       </p>
     </div>
 
@@ -33,17 +33,24 @@
 
   <h4>Contact</h4>
 
-  {% if section.settings.email != blank %}
-    <p>{{ section.settings.email }}</p>
+<div class="footer-contact">
+
+  {% if shop.email != blank %}
+    <p>Email: {{ shop.email }}</p>
   {% endif %}
 
-  {% if section.settings.phone != blank %}
-    <p>{{ section.settings.phone }}</p>
+  {% if shop.phone != blank %}
+    <p>Phone: {{ shop.phone }}</p>
   {% endif %}
 
-  {% if section.settings.address != blank %}
-    <p>{{ section.settings.address }}</p>
+  {% if shop.address.address1 != blank %}
+    <p>
+      {{ shop.address.address1 }},
+
+    </p>
   {% endif %}
+
+</div>
 
   <!-- SOCIAL ICONS -->
   <div class="footer-social">
