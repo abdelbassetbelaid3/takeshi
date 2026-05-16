@@ -1,0 +1,95 @@
+{% comment %}
+  This section is used in the collection template to render collection page
+  listing all products within a collection.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+<h1 class="collection">{{ collection.title }}</h1>
+
+<div class="collection-products collection">
+  {% paginate collection.products by 20 %}
+    {% for product in collection.products %}
+<div class="collection-product">
+
+  <a href="{{ product.url }}" class="collection-product__image-wrapper">
+
+    {% if product.featured_image %}
+      <img 
+        class="collection-product__image main-img"
+        src="{{ product.featured_image | image_url: width: 400 }}"
+        alt="{{ product.title }}"
+      >
+    {% endif %}
+
+    {% if product.images[1] %}
+      <img 
+        class="collection-product__image hover-img"
+        src="{{ product.images[1] | image_url: width: 400 }}"
+        alt="{{ product.title }}"
+      >
+    {% endif %}
+
+  </a>
+
+  <div class="collection-product__content">
+    <p>{{ product.title | escape | link_to: product.url }}</p>
+    <p>{{ product.price | money }}</p>
+  </div>
+
+</div>
+    {% endfor %}
+
+    {{ paginate | default_pagination }}
+  {% endpaginate %}
+</div>
+
+{% stylesheet %}
+  .collection{
+    margin-inline: 10%;
+    margin-block: 20px;
+  }
+  .collection-products {
+    display: grid;
+    grid-template-columns: 33% ,33%,33%;
+    gap: 1%;
+  }
+  .collection-product__image-wrapper{
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.collection-product__image{
+  width: 425px;
+  height: 750px;
+  object-fit: cover;
+  transition: 0.4s ease;
+}
+
+/* hover image hidden */
+.hover-img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* hover effect */
+.collection-product__image-wrapper:hover .main-img{
+  opacity: 0;
+  transform: scale(1.08);
+}
+
+.collection-product__image-wrapper:hover .hover-img{
+  opacity: 1;
+  transform: scale(1.08);
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.collection",
+  "settings": []
+}
+{% endschema %}

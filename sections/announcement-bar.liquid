@@ -1,0 +1,66 @@
+<div 
+  class="announcement-bar"
+  style="
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.font_size }}px;
+    text-align: {{ section.settings.text_aligments }};
+  "
+>
+  {{ section.settings.announcement_text }}
+</div>
+
+
+{%  schema  %}  
+{
+    "name": "Announcement Bar",
+    "settings": [
+        {
+            "type": "text",
+            "id": "announcement_text",
+            "label": "announcement text",
+            "default": "Welcome to our store"
+     },{
+            "type": "color",
+            "id": "background_color",
+            "label": "background_color",
+            "default": "#fff"
+     },{
+            "type": "color",
+            "id": "text_color",
+            "label": "text_color",
+            "default": "#000"
+     },{
+            "type": "number",
+            "id": "font_size",
+            "label": "Font Size",
+            "default": 20
+},{
+  "type": "select",
+  "id": "text_aligments",
+  "label": "Text Aligments",
+  "options": [
+    {
+      "value": "right",
+      "label": "Right"
+    },
+    {
+      "value": "center",
+      "label": "Center"
+    },
+    {
+      "value": "left",
+      "label": "Left"
+    }
+  ],
+  "default": "center"
+}],
+    "presets": [
+        {
+            "name": "Announcement Bar",
+            "category": "Header"
+        }
+    ]
+}
+
+{% endschema %} 

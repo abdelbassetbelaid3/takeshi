@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "hero": {
+      "type": "heroslider",
+      "settings": {},
+      "blocks": {
+        "slide_1": { "type": "slide", "settings": {} },
+        "slide_2": { "type": "slide", "settings": {} },
+        "slide_3": { "type": "slide", "settings": {} }
+      },
+      "block_order": ["slide_1", "slide_2", "slide_3"]
+    },
+
+    "products_1": {
+      "type": "manual-product-list",
+      "settings": {
+        "title": "Featured Products"
+      },
+      "blocks": {
+        "p1": { "type": "product", "settings": {} },
+        "p2": { "type": "product", "settings": {} },
+        "p3": { "type": "product", "settings": {} },
+        "p4": { "type": "product", "settings": {} },
+        "p5": { "type": "product", "settings": {} },
+        "p6": { "type": "product", "settings": {} }
+      },
+      "block_order": ["p1","p2","p3","p4","p5","p6"]
+    },
+
+    "products_2": {
+      "type": "manual-product-list",
+      "settings": {
+        "title": "New Arrivals"
+      },
+      "blocks": {
+        "p7": { "type": "product", "settings": {} },
+        "p8": { "type": "product", "settings": {} },
+        "p9": { "type": "product", "settings": {} },
+        "p10": { "type": "product", "settings": {} },
+        "p11": { "type": "product", "settings": {} },
+        "p12": { "type": "product", "settings": {} }
+      },
+      "block_order": ["p7","p8","p9","p10","p11","p12"]
+    }
+  },
+
+  "order": [
+    "hero",
+    "products_1",
+    "products_2"
+  ]
+}

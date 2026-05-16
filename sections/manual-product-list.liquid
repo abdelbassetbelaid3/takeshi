@@ -1,0 +1,239 @@
+<section class="manual-product-list">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    <div class="slider-wrapper">
+      <button class="arrow left" onclick="slideProducts(-1)">‹</button>
+
+      <div class="product-slider" id="productSlider">
+        {% for block in section.blocks %}
+          <div class="product-card" {{ block.shopify_attributes }}>
+<a href="{{ block.settings.product_link }}" class="image-wrapper">
+
+  {% if block.settings.main_image %}
+    <img 
+      src="{{ block.settings.main_image | img_url: '600x600' }}" 
+      class="main-img"
+      alt="Product image">
+  {% else %}
+    <div class="main-img placeholder">
+      {{ 'product-1' | placeholder_svg_tag }}
+    </div>
+  {% endif %}
+
+  {% if block.settings.hover_image %}
+    <img 
+      src="{{ block.settings.hover_image | img_url: '600x600' }}" 
+      class="hover-img"
+      alt="Hover image">
+  {% endif %}
+
+</a>
+
+            <div class="info">
+              <h3>{{ block.settings.title }}</h3>
+              <span class="price">{{ block.settings.price }}</span>
+
+              {% if block.settings.variant_id != blank %}
+                <form action="/cart/add" method="post">
+                  <input type="hidden" name="id" value="{{ block.settings.variant_id }}">
+                  <button type="submit" class="cart-btn">Add to cart</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <button class="arrow right" onclick="slideProducts(1)">›</button>
+    </div>
+  </div>
+</section>
+
+<style>
+.manual-product-list{
+  padding:60px 20px;
+}
+
+.section-title{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:30px;
+}
+
+.slider-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+/* VIEWPORT */
+.product-slider{
+  display:flex;
+  gap:18px;
+  overflow:hidden;
+  scroll-behavior:smooth;
+  width:100%;
+}
+
+/* MAX 6 ITEMS ON DESKTOP */
+.product-card{
+  flex:0 0 calc(100% / 6 - 15px);
+  background:#fff;
+}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .product-card{ flex:0 0 calc(100% / 4 - 15px); }
+}
+@media(max-width:800px){
+  .product-card{ flex:0 0 calc(100% / 3 - 15px); }
+}
+@media(max-width:600px){
+  .product-card{ flex:0 0 calc(100% / 2 - 15px); }
+}
+@media(max-width:420px){
+  .product-card{ flex:0 0 100%; }
+}
+
+.image-wrapper{
+  position:relative;
+  display:block;
+  overflow:hidden;
+}
+
+.image-wrapper img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  transition:0.45s ease;
+}
+
+/* ZOOM + SWAP */
+.main-img{ transform:scale(1); }
+.image-wrapper:hover .main-img{
+  transform:scale(1.12);
+  opacity:0;
+}
+
+.hover-img{
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+}
+.image-wrapper:hover .hover-img{
+  opacity:1;
+  transform:scale(1.12);
+}
+
+.info{
+  text-align:center;
+  padding:10px 0;
+}
+
+.info h3{
+  font-size:15px;
+  margin:8px 0 4px;
+}
+
+.price{
+  display:block;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.cart-btn{
+  background:#111;
+  color:#fff;
+  border:none;
+  padding:7px 12px;
+  cursor:pointer;
+}
+
+.arrow{
+  background:#fff;
+  border:none;
+  font-size:26px;
+  width:38px;
+  height:38px;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  z-index:2;
+}
+
+.left{ margin-right:8px; }
+.right{ margin-left:8px; }
+.placeholder{
+  width:100%;
+  height:240px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f4f4f4;
+}
+
+.placeholder svg{
+  width:60%;
+  height:60%;
+  opacity:0.4;
+}
+
+</style>
+
+<script>
+function slideProducts(direction){
+  const slider = document.getElementById('productSlider');
+  const card = slider.querySelector('.product-card');
+  if(!card) return;
+
+  const style = window.getComputedStyle(card);
+  const gap = 18;
+  const cardWidth = card.offsetWidth + gap;
+
+  // slide by number of visible items (6 on desktop)
+  slider.scrollLeft += direction * cardWidth * 3;
+}
+</script>
+
+{% schema %}
+{
+  "name": "Manual Product Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Products"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product Block",
+      "settings": [
+        { "type": "image_picker", "id": "main_image", "label": "Main image" },
+        { "type": "image_picker", "id": "hover_image", "label": "Hover image" },
+        { "type": "text", "id": "title", "label": "Product title" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$99" },
+        { "type": "url", "id": "product_link", "label": "Product link" },
+        { "type": "text", "id": "variant_id", "label": "Variant ID (Add to cart)" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+"presets": [
+  {
+    "name": "Manual Product Slider",
+    "blocks": [
+      { "type": "product" },
+      { "type": "product" },
+      { "type": "product" }
+    ]
+  }
+]
+
+}
+{% endschema %}

@@ -1,0 +1,203 @@
+<div class="rp-section">
+  <h2 class="rp-title">You may also like</h2>
+
+  <div class="rp-wrapper">
+    <button class="rp-arrow rp-left" type="button">‹</button>
+
+    <div class="rp-slider">
+      {% if recommendations.products_count > 0 %}
+
+        {% for rec_product in recommendations.products %}
+          
+          <div class="rp-card">
+            <a class="rp-image" href="{{ rec_product.url }}">
+
+              {% if rec_product.featured_image %}
+                <img 
+                  class="rp-main"
+                  src="{{ rec_product.featured_image | image_url: width: 400 }}"
+                  alt="{{ rec_product.title }}"
+                >
+              {% else %}
+                <div class="rp-placeholder">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+
+              {% if rec_product.images[1] %}
+                <img 
+                  class="rp-hover"
+                  src="{{ rec_product.images[1] | image_url: width: 400 }}"
+                  alt="{{ rec_product.title }}"
+                >
+              {% endif %}
+
+            </a>
+
+            <div class="rp-info">
+              <h3>{{ rec_product.title }}</h3>
+              <span class="rp-price">{{ rec_product.price | money }}</span>
+              <button class="rp-btn">Add to cart</button>
+            </div>
+          </div>
+
+        {% endfor %}
+
+      {% else %}
+
+        <!-- 🔥 FALLBACK (IMPORTANT for new stores) -->
+        {% for rec_product in collections.all.products limit: 8 %}
+          
+          <div class="rp-card">
+            <a class="rp-image" href="{{ rec_product.url }}">
+
+              {% if rec_product.featured_image %}
+                <img 
+                  class="rp-main"
+                  src="{{ rec_product.featured_image | image_url: width: 400 }}"
+                >
+              {% endif %}
+
+            </a>
+
+            <div class="rp-info">
+              <h3>{{ rec_product.title }}</h3>
+              <span class="rp-price">{{ rec_product.price | money }}</span>
+            </div>
+          </div>
+
+        {% endfor %}
+
+      {% endif %}
+    </div>
+
+    <button class="rp-arrow rp-right" type="button">›</button>
+  </div>
+</div>
+
+{% stylesheet %}
+.rp-section{ padding:60px 20px; }
+
+.rp-title{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:30px;
+}
+
+.rp-wrapper{
+  display:flex;
+  align-items:center;
+}
+
+.rp-slider{
+  display:flex;
+  gap:18px;
+  overflow:hidden;
+  scroll-behavior:smooth;
+  width:100%;
+}
+
+.rp-card{
+  flex:0 0 calc(100% / 6 - 15px);
+}
+
+/* responsive */
+@media(max-width:1200px){
+  .rp-card{ flex:0 0 calc(100% / 4 - 15px); }
+}
+@media(max-width:800px){
+  .rp-card{ flex:0 0 calc(100% / 3 - 15px); }
+}
+@media(max-width:600px){
+  .rp-card{ flex:0 0 calc(100% / 2 - 15px); }
+}
+@media(max-width:420px){
+  .rp-card{ flex:0 0 100%; }
+}
+
+.rp-image{
+  position:relative;
+  display:block;
+  overflow:hidden;
+}
+
+.rp-image img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  transition:0.4s;
+}
+
+.rp-main{ transform:scale(1); }
+
+.rp-image:hover .rp-main{
+  transform:scale(1.1);
+  opacity:0;
+}
+
+.rp-hover{
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0;
+}
+
+.rp-image:hover .rp-hover{
+  opacity:1;
+  transform:scale(1.1);
+}
+
+.rp-info{
+  text-align:center;
+  padding:10px 0;
+}
+
+.rp-price{
+  font-weight:bold;
+}
+
+.rp-btn{
+  background:#111;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  cursor:pointer;
+}
+
+.rp-arrow{
+  font-size:26px;
+  width:38px;
+  height:38px;
+  cursor:pointer;
+}
+
+.rp-placeholder{
+  height:240px;
+  background:#eee;
+}
+{% endstylesheet %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const slider = document.querySelector(".rp-slider");
+  const left = document.querySelector(".rp-left");
+  const right = document.querySelector(".rp-right");
+
+  if (!slider) return;
+
+  right.addEventListener("click", () => {
+    slider.scrollBy({ left: 300, behavior: "smooth" });
+  });
+
+  left.addEventListener("click", () => {
+    slider.scrollBy({ left: -300, behavior: "smooth" });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Related Products",
+  "settings": []
+}
+{% endschema %}

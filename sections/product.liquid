@@ -1,0 +1,439 @@
+{% comment %}
+  This section is used in the product template to render product page with
+  media, content, and add-to-cart form.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+{% endcomment %}
+
+<div class="product-slider" data-slider>
+  <div class="product-slider__track">
+    {% for image in product.images %}
+      <div class="product-slider__slide">
+        {% render 'image', class: 'product-image', image: image %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button class="product-slider__arrow product-slider__arrow--prev" aria-label="Previous image">‹</button>
+  <button class="product-slider__arrow product-slider__arrow--next" aria-label="Next image">›</button>
+
+  <div class="product-slider__dots" role="tablist" aria-label="Image pagination"></div>
+</div>
+<div class="summary">
+  <section class="summary-item">
+  <h1>{{ product.title }}</h1>
+  <p>{{ product.price | money }}</p>
+  <input type="hidden" name="id" id="selectedVariant" value="{{ product.selected_or_first_available_variant.id }}">
+{% unless product.has_only_default_variant %}
+  {% for option in product.options_with_values %}
+    {% if option.name contains 'Size' or option.name contains 'size' %}
+
+      <div class="variant-wrapper">
+        <label class="variant-label">{{ option.name }}</label>
+
+        <div class="variant-buttons">
+          {% for value in option.values %}
+            {% assign variant_for_value = product.variants | where: "option1", value | first %}
+
+            <button
+              type="button"
+              class="variant-btn {% if variant_for_value.available == false %}soldout{% endif %}"
+              data-variant-id="{{ variant_for_value.id }}"
+              {% if variant_for_value.available == false %}disabled{% endif %}
+            >
+              {{ value }}
+            </button>
+          {% endfor %}
+        </div>
+
+      </div>
+
+    {% endif %}
+  {% endfor %}
+{% endunless %}
+  {% form 'product', product, id: 'product-form' %}
+
+
+   <div class="quantity-selector">
+  <button type="button" class="qty-btn minus">−</button>
+  
+  <input 
+    type="number" 
+    name="quantity" 
+    min="1" 
+    value="1" 
+    class="qty-input"
+  >
+  
+  <button type="button" class="qty-btn plus">+</button>
+</div>
+    {{ form | payment_button }}
+
+    <input type="submit" value="Add to cart" class="add-to-cart">
+  {% endform %}
+  </section>
+  <section class="summary-item guide">
+  
+    {{ product.description }}
+
+  
+  <h3>🛒 How to Order</h3>
+  <p>Select your size and quantity
+Click Order Now and fill in your details
+We’ll contact you to confirm your order
+Pay Cash on Delivery</p>
+  <h3>📞 Need Help?</h3>
+  <p>For any questions, feel free to contact us or reach us on WhatsApp anytime.</p>
+  </section>
+</div>
+
+{% stylesheet %}
+.guide{
+  display: flex;
+  flex-direction: column;
+}
+.guide > p:first-child{
+  flex: 1;
+}
+.shopify-product-form{
+  display: grid;
+  grid-template-rows: 50% 50%;
+  grid-template-columns: 20% 80%;
+  gap: 10px;
+}
+.add-to-cart {
+  grid-column: span 2;
+}
+.shopify-payment-button__button{
+  background-color: #000;
+  overflow: hidden;
+
+}
+.summary{
+  display: flex;
+  justify-content: center;
+  margin-inline: 10%;
+
+}
+.summary-item{
+  border: #ccc 1px solid;
+  width: 100%;
+  padding-inline: 20px;
+  padding-block: 25px;
+}
+.product-slider {
+  position: relative;
+  max-width: 100%;
+  margin: auto;
+  overflow: hidden;
+  margin-inline: 10%;
+
+}
+
+.product-slider__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  gap: 10px;
+}
+.product-slider__track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.product-slider__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+.product-image img {
+  width: 500px;
+  height: 650px;
+  display: block;
+  object-fit: cover;
+}
+.variant-btn {
+  border: none;
+  background-color: #fff;
+  font-size: 18px;
+  padding: 4px 10px;
+  margin: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+/* Tablet: 2 slides per view */
+@media (min-width: 768px) {
+  .product-slider__slide {
+    flex: 0 0 50%;
+  }
+}
+
+/* Desktop: 3 slides per view */
+@media (min-width: 1024px) {
+  .product-slider__slide {
+    flex: 0 0 33.333%;
+  }
+}
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid #ddd;
+
+}
+
+.qty-input {
+  width: 60px;
+  text-align: center;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Remove arrows (optional) */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.qty-btn:hover {
+  background: #e0e0e0;
+}
+/* Arrows */
+.product-slider__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 36px;
+  text-align: center;
+  z-index: 10;
+}
+
+.product-slider__arrow--prev { left: 10px; }
+.product-slider__arrow--next { right: 10px; }
+
+/* Dots */
+.product-slider__dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 10;
+}
+
+.product-slider__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ccc;
+  border: none;
+  cursor: pointer;
+}
+
+.product-slider__dot.is-active {
+  background: #000;
+}
+/* =========================
+   RESPONSIVE FIXES
+========================= */
+
+/* TABLET */
+@media (max-width: 1024px){
+
+  .summary{
+    flex-direction: column;
+    margin-inline: 5%;
+  }
+
+  .summary-item{
+    width: 100%;
+  }
+
+  .product-image img{
+    width: 100%;
+    height: 500px;
+  }
+
+  .shopify-product-form{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .add-to-cart{
+    grid-column: span 1;
+  }
+
+}
+
+
+/* PHONE */
+@media (max-width: 600px){
+
+  .summary{
+    flex-direction: column;
+    margin-inline: 0;
+  }
+
+  .summary-item{
+    padding: 15px;
+  }
+
+  .product-slider{
+    margin-inline: 0;
+  }
+
+  .product-image img{
+    width: 100%;
+    height: 400px;
+  }
+
+  .product-slider__slide{
+    flex: 0 0 100%;
+  }
+
+  .quantity-selector{
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .qty-input{
+    width: 50px;
+  }
+
+  .variant-buttons{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .variant-btn{
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+}
+
+
+/* SMALL PHONE */
+@media (max-width: 420px){
+
+  .product-image img{
+    height: 320px;
+  }
+
+  .qty-btn{
+    width: 35px;
+    height: 35px;
+  }
+
+}
+
+
+{% endstylesheet %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".quantity-selector").forEach(qty => {
+    const minus = qty.querySelector(".minus");
+    const plus = qty.querySelector(".plus");
+    const input = qty.querySelector(".qty-input");
+
+    minus.addEventListener("click", () => {
+      let value = parseInt(input.value) || 1;
+      if (value > 1) input.value = value - 1;
+    });
+
+    plus.addEventListener("click", () => {
+      let value = parseInt(input.value) || 1;
+      input.value = value + 1;
+    });
+  });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const root = document.querySelector('[data-slider]');
+  if (!root) return;
+
+  const track = root.querySelector('.product-slider__track');
+  const slides = root.querySelectorAll('.product-slider__slide');
+  const prev = root.querySelector('.product-slider__arrow--prev');
+  const next = root.querySelector('.product-slider__arrow--next');
+  const dotsWrap = root.querySelector('.product-slider__dots');
+
+  let index = 0;
+
+  function getSlideWidth() {
+    return slides[0].offsetWidth + 10; // include gap
+  }
+
+  function goToSlide(i) {
+    index = i;
+    track.scrollTo({
+      left: getSlideWidth() * index,
+      behavior: 'smooth'
+    });
+    updateDots();
+  }
+
+  // Buttons
+  next.addEventListener('click', () => {
+    if (index < slides.length - 1) {
+      goToSlide(index + 1);
+    }
+  });
+
+  prev.addEventListener('click', () => {
+    if (index > 0) {
+      goToSlide(index - 1);
+    }
+  });
+
+  // Dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'product-slider__dot';
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsWrap.appendChild(dot);
+  });
+
+  function updateDots() {
+    const dots = dotsWrap.querySelectorAll('.product-slider__dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === index);
+    });
+  }
+
+  updateDots();
+});
+</script>
+
+{% schema %}
+{
+  "name": "t:general.product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

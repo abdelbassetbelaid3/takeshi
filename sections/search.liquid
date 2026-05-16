@@ -1,0 +1,105 @@
+{% comment %}
+  This section is used in the search template to render search results for
+  products, articles, and pages.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/search
+{% endcomment %}
+
+<h1 class="margin">{{ 'search.title' | t }}</h1>
+
+
+
+{% if search.performed %}
+  {% if search.results_count == 0 %}
+    <p class="margin">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
+  {% else %}
+    <p class="margin">{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
+
+    <div class="search-results">
+      {% paginate search.results by 20 %}
+        {% # Search result items may be an article, a page, or a product. %}
+        {% for result in search.results %}
+          <div class="search-result search-result__image-wrapper">
+            {% assign featured_image = result.featured_image | default: result.image %}
+            {% if featured_image %}
+              {% render 'image', class: 'search-result__image main-img', image: featured_image, url: result.url, width: 400 %}
+            {% endif %}
+            {% if featured_image[1] %}
+              {% render 'image', class: 'search-result__image hover-img', image: featured_image[1], url: result.url, width: 400 %}
+            {% endif %}
+            <div class="search-result__content">
+              <p>
+                {{ result.title | link_to: result.url }}
+                {% if result.price %}
+                  {{ result.price | money_with_currency }}
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+        {% endfor %}
+
+        {{ paginate | default_pagination }}
+      {% endpaginate %}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% stylesheet %}
+  .margin{
+        margin-inline: 10%;
+    margin-block: 20px;
+  }
+  .search-results {
+    display: grid;
+    grid-template-columns: 33% ,33%,33%;
+    gap: 1%;
+    margin-inline: 10%;
+    margin-block: 20px;
+  }
+  .search-results .prev,
+  .search-results .page,
+  .search-results .next {
+    grid-column: 1 / -1;
+  }
+
+
+.search-result__image-wrapper{
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.search-result__image{
+  width: 425px;
+  height: 750px;
+  object-fit: cover;
+  transition: 0.4s ease;
+}
+
+/* hover image hidden */
+.hover-img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* hover effect */
+.search-result__image-wrapper:hover .main-img{
+  opacity: 0;
+  transform: scale(1.08);
+}
+
+.search-result__image-wrapper:hover .hover-img{
+  opacity: 1;
+  transform: scale(1.08);
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.search",
+  "settings": []
+}
+{% endschema %}

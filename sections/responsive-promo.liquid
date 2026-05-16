@@ -1,0 +1,108 @@
+<div class="rpromo-section">
+  <a href="#{{ section.settings.target_id }}" class="rpromo-link">
+
+    <picture>
+      <!-- DESKTOP -->
+      {% if section.settings.image_desktop %}
+        <source 
+          media="(min-width: 1024px)" 
+          srcset="{{ section.settings.image_desktop | image_url: width: 1400 }}"
+        >
+      {% endif %}
+
+      <!-- TABLET -->
+      {% if section.settings.image_tablet %}
+        <source 
+          media="(min-width: 768px)" 
+          srcset="{{ section.settings.image_tablet | image_url: width: 900 }}"
+        >
+      {% endif %}
+
+      <!-- MOBILE (fallback) -->
+      {% if section.settings.image_mobile %}
+        <img 
+          src="{{ section.settings.image_mobile | image_url: width: 600 }}" 
+          alt="promo"
+          class="rpromo-img"
+          loading="lazy"
+        >
+      {% endif %}
+    </picture>
+
+  </a>
+</div>
+
+{% stylesheet %}
+.rpromo-section{
+  width: 100%;
+}
+
+.rpromo-link{
+  display: block;
+}
+
+.rpromo-img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+{% endstylesheet %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const link = document.querySelector(".rpromo-link");
+
+  if (!link) return;
+
+  link.addEventListener("click", function(e) {
+    const targetId = this.getAttribute("href");
+
+    if (!targetId.startsWith("#")) return;
+
+    const target = document.querySelector(targetId);
+    if (!target) return;
+
+    e.preventDefault();
+
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Responsive Promo Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_tablet",
+      "label": "Tablet Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "text",
+      "id": "target_id",
+      "label": "Scroll target ID",
+      "default": "product-form",
+      "info": "Example: product-form"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive Promo Banner"
+    }
+  ]
+}
+{% endschema %}
