@@ -1,52 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "heroslider",
-      "settings": {},
       "blocks": {
-        "slide_1": { "type": "slide", "settings": {} },
-        "slide_2": { "type": "slide", "settings": {} },
-        "slide_3": { "type": "slide", "settings": {} }
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "link": ""
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "link": ""
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "link": ""
+          }
+        }
       },
-      "block_order": ["slide_1", "slide_2", "slide_3"]
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ],
+      "settings": {}
     },
-
-    "products_1": {
-      "type": "manual-product-list",
+    "home_product_list_W4hegx": {
+      "type": "home-product-list",
+      "name": "Homepage Product List",
       "settings": {
-        "title": "Featured Products"
-      },
-      "blocks": {
-        "p1": { "type": "product", "settings": {} },
-        "p2": { "type": "product", "settings": {} },
-        "p3": { "type": "product", "settings": {} },
-        "p4": { "type": "product", "settings": {} },
-        "p5": { "type": "product", "settings": {} },
-        "p6": { "type": "product", "settings": {} }
-      },
-      "block_order": ["p1","p2","p3","p4","p5","p6"]
-    },
-
-    "products_2": {
-      "type": "manual-product-list",
-      "settings": {
-        "title": "New Arrivals"
-      },
-      "blocks": {
-        "p7": { "type": "product", "settings": {} },
-        "p8": { "type": "product", "settings": {} },
-        "p9": { "type": "product", "settings": {} },
-        "p10": { "type": "product", "settings": {} },
-        "p11": { "type": "product", "settings": {} },
-        "p12": { "type": "product", "settings": {} }
-      },
-      "block_order": ["p7","p8","p9","p10","p11","p12"]
+        "title": "Bluelock Jersey",
+        "collection": "bluelock",
+        "limit": 5
+      }
     }
   },
-
   "order": [
     "hero",
-    "products_1",
-    "products_2"
+    "home_product_list_W4hegx"
   ]
 }
