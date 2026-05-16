@@ -13,10 +13,24 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "menu": ""
+      }
+    },
+    "announcement_bar_qxWNBr": {
+      "type": "announcement-bar",
+      "name": "Announcement Bar",
+      "settings": {
+        "announcement_text": "Welcome to our store",
+        "background_color": "#fff",
+        "text_color": "#000",
+        "font_size": 20,
+        "text_aligments": "center"
+      }
     }
   },
   "order": [
+    "announcement_bar_qxWNBr",
     "header"
-  ],
+  ]
 }
