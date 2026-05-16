@@ -28,25 +28,99 @@
       </ul>
     </div>
 
-    <!-- Contact Column -->
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <p>{{ section.settings.email }}</p>
-      <p>{{ section.settings.phone }}</p>
-      <p>{{ section.settings.address }}</p>
+<!-- Contact Column -->
+<div class="footer-col">
 
-      <div class="footer-social">
-        {% if section.settings.facebook != blank %}
-          <a href="{{ section.settings.facebook }}" target="_blank">Facebook</a>
-        {% endif %}
-        {% if section.settings.instagram != blank %}
-          <a href="{{ section.settings.instagram }}" target="_blank">Instagram</a>
-        {% endif %}
-        {% if section.settings.tiktok != blank %}
-          <a href="{{ section.settings.tiktok }}" target="_blank">TikTok</a>
-        {% endif %}
-      </div>
-    </div>
+  <h4>Contact</h4>
+
+  {% if section.settings.email != blank %}
+    <p>{{ section.settings.email }}</p>
+  {% endif %}
+
+  {% if section.settings.phone != blank %}
+    <p>{{ section.settings.phone }}</p>
+  {% endif %}
+
+  {% if section.settings.address != blank %}
+    <p>{{ section.settings.address }}</p>
+  {% endif %}
+
+  <!-- SOCIAL LINKS -->
+  <div class="footer-social">
+
+    {% if shop.brand.metafields.social_links.facebook.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.facebook.value }}" 
+        target="_blank"
+        aria-label="Facebook"
+      >
+        Facebook
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.instagram.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.instagram.value }}" 
+        target="_blank"
+        aria-label="Instagram"
+      >
+        Instagram
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.tiktok.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.tiktok.value }}" 
+        target="_blank"
+        aria-label="TikTok"
+      >
+        TikTok
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.youtube.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.youtube.value }}" 
+        target="_blank"
+        aria-label="YouTube"
+      >
+        YouTube
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.twitter.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.twitter.value }}" 
+        target="_blank"
+        aria-label="Twitter"
+      >
+        Twitter
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.snapchat.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.snapchat.value }}" 
+        target="_blank"
+        aria-label="Snapchat"
+      >
+        Snapchat
+      </a>
+    {% endif %}
+
+    {% if shop.brand.metafields.social_links.pinterest.value != blank %}
+      <a 
+        href="{{ shop.brand.metafields.social_links.pinterest.value }}" 
+        target="_blank"
+        aria-label="Pinterest"
+      >
+        Pinterest
+      </a>
+    {% endif %}
+
+  </div>
+
+</div>
 
   </div>
 

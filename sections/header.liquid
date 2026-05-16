@@ -8,12 +8,13 @@
   </button>
 
   <!-- CENTER: Logo -->
+
 <div class="header-logo">
   <a href="{{ routes.root_url }}">
 
     {% if shop.brand.logo != blank %}
       <img
-        src="{{ shop.brand.logo | image_url: width: 500 }}"
+        src="{{ shop.brand.logo | image_url: width: 100 }}"
         alt="{{ shop.name }}"
         loading="lazy"
       >
@@ -23,8 +24,6 @@
 
   </a>
 </div>
-</div>
-
   <!-- RIGHT: Icons -->
   <div class="header__icons">
 <button class="header__icon" id="search-toggle" aria-label="Search">
