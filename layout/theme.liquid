@@ -3,7 +3,28 @@
   <head>
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
+{% if shop.brand.square_logo != blank %}
 
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="{{ shop.brand.square_logo | image_url: width: 32, height: 32 }}"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="{{ shop.brand.square_logo | image_url: width: 192, height: 192 }}"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="{{ shop.brand.square_logo | image_url: width: 180, height: 180 }}"
+  >
+
+{% endif %}
     {% comment %}
       Font preloading:
       1. Preconnect to font CDN for faster connection
