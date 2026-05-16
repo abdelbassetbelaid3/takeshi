@@ -7,20 +7,14 @@
     <span></span>
   </button>
 
-  <!-- CENTER LOGO -->
-  <div class="header-logo">
+  <!-- CENTER: Logo -->
+  <div class="header__logo">
     <a href="{{ routes.root_url }}">
-
-      {% if settings.logo != blank %}
-        <img
-          src="{{ settings.logo | image_url: width: 500 }}"
-          alt="{{ shop.name }}"
-          loading="lazy"
-        >
+      {% if section.settings.logo %}
+        <img src="{{ section.settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}">
       {% else %}
         {{ shop.name }}
       {% endif %}
-
     </a>
   </div>
 
