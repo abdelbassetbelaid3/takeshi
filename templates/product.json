@@ -9,25 +9,25 @@
  */
 {
   "sections": {
-    "1778943669c0945586": {
+    "1778943860236ba6b5": {
       "type": "apps",
       "blocks": {
-        "releasit_cod_form_form_app_block_QAYwBL": {
-          "type": "shopify://apps/releasit-cod-form/blocks/form-app-block/72faf214-4174-4fec-886b-0d0e8d3af9a2",
+        "releasit_cod_form_button_app_block_TRj8yp": {
+          "type": "shopify://apps/releasit-cod-form/blocks/button-app-block/72faf214-4174-4fec-886b-0d0e8d3af9a2",
           "settings": {
             "product": "{{product}}"
           }
         },
-        "releasit_cod_form_button_app_block_tWJ88Q": {
-          "type": "shopify://apps/releasit-cod-form/blocks/button-app-block/72faf214-4174-4fec-886b-0d0e8d3af9a2",
+        "releasit_cod_form_form_app_block_CrXP9i": {
+          "type": "shopify://apps/releasit-cod-form/blocks/form-app-block/72faf214-4174-4fec-886b-0d0e8d3af9a2",
           "settings": {
             "product": "{{product}}"
           }
         }
       },
       "block_order": [
-        "releasit_cod_form_form_app_block_QAYwBL",
-        "releasit_cod_form_button_app_block_tWJ88Q"
+        "releasit_cod_form_button_app_block_TRj8yp",
+        "releasit_cod_form_form_app_block_CrXP9i"
       ],
       "settings": {}
     },
@@ -41,7 +41,7 @@
     }
   },
   "order": [
-    "1778943669c0945586",
+    "1778943860236ba6b5",
     "main",
     "related_products"
   ]
