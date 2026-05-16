@@ -431,7 +431,56 @@ document.addEventListener('DOMContentLoaded', function () {
 {% schema %}
 {
   "name": "t:general.product",
-  "settings": [],
+  "settings": [
+  {
+    "type": "checkbox",
+    "id": "show_title",
+    "label": "Show Product Title",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_price",
+    "label": "Show Price",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_gallery",
+    "label": "Show Product Images",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_variants",
+    "label": "Show Variants",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_quantity",
+    "label": "Show Quantity Selector",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_atc",
+    "label": "Show Add to Cart",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_payment",
+    "label": "Show Buy Now (Shop Pay)",
+    "default": true
+  },
+  {
+    "type": "checkbox",
+    "id": "show_description",
+    "label": "Show Description",
+    "default": true
+  }
+],
   "disabled_on": {
     "groups": ["header", "footer"]
   }
