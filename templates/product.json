@@ -9,14 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "product",
-      "settings": {}
-    },
-    "related_products": {
-      "type": "related-products",
-      "settings": {}
-    },
     "1778943669c0945586": {
       "type": "apps",
       "blocks": {
@@ -38,11 +30,19 @@
         "releasit_cod_form_button_app_block_tWJ88Q"
       ],
       "settings": {}
+    },
+    "main": {
+      "type": "product",
+      "settings": {}
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {}
     }
   },
   "order": [
+    "1778943669c0945586",
     "main",
-    "related_products",
-    "1778943669c0945586"
+    "related_products"
   ]
 }
