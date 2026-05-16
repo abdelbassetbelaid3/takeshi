@@ -11,12 +11,6 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
-    "header": {
-      "type": "header",
-      "settings": {
-        "menu": ""
-      }
-    },
     "announcement_bar_qxWNBr": {
       "type": "announcement-bar",
       "name": "Announcement Bar",
@@ -26,6 +20,12 @@
         "text_color": "#000",
         "font_size": 20,
         "text_aligments": "center"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu"
       }
     }
   },
