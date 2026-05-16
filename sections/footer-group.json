@@ -14,8 +14,15 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "logo": "shopify://shop_images/Asset_1.png",
+        "about": "Write something about your brand.",
+        "menu": "footer",
+        "email": "",
+        "phone": "",
+        "address": "",
+        "facebook": "",
+        "instagram": "",
+        "tiktok": ""
       }
     }
   },
