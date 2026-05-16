@@ -8,15 +8,21 @@
   </button>
 
   <!-- CENTER: Logo -->
-  <div class="header__logo">
-    <a href="{{ routes.root_url }}">
-      {% if section.settings.logo %}
-        <img src="{{ section.settings.logo | image_url: width: 500 }}" alt="{{ shop.name }}">
-      {% else %}
-        {{ shop.name }}
-      {% endif %}
-    </a>
-  </div>
+<div class="header-logo">
+  <a href="{{ routes.root_url }}">
+
+    {% if settings.brand_logo != blank %}
+      <img
+        src="{{ settings.brand_logo | image_url: width: 500 }}"
+        alt="{{ shop.name }}"
+        loading="lazy"
+      >
+    {% else %}
+      {{ shop.name }}
+    {% endif %}
+
+  </a>
+</div>
 
   <!-- RIGHT: Icons -->
   <div class="header__icons">
