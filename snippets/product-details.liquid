@@ -1,18 +1,14 @@
 <div class="product-details" data-product-details>
 
   <!-- TITLE -->
-  {% if block.settings.show_title %}
-    <h1 class="product-details__title">
-      {{ product.title }}
-    </h1>
-  {% endif %}
+  <h1 class="product-details__title">
+    {{ product.title }}
+  </h1>
 
   <!-- PRICE -->
-  {% if block.settings.show_price %}
-    <div class="product-details__price">
-      {% render 'price', product: product %}
-    </div>
-  {% endif %}
+  <div class="product-details__price">
+    {% render 'price', product: product %}
+  </div>
 
   <!-- PRODUCT FORM -->
   {% form 'product', product, class: 'product-form' %}
@@ -21,10 +17,7 @@
     {% if product.has_only_default_variant == false %}
       <select name="id" class="product-details__variant">
         {% for variant in product.variants %}
-          <option
-            value="{{ variant.id }}"
-            {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
-          >
+          <option value="{{ variant.id }}">
             {{ variant.title }} - {{ variant.price | money }}
           </option>
         {% endfor %}
@@ -32,17 +25,15 @@
     {% endif %}
 
     <!-- QUANTITY -->
-    <div class="product-details__quantity">
-      <input type="number"
-             name="quantity"
-             value="1"
-             min="1"
-             class="product-details__qty">
-    </div>
+    <input type="number"
+           name="quantity"
+           value="1"
+           min="1"
+           class="product-details__qty">
 
     <!-- ADD TO CART -->
     <button type="submit" class="product-details__atc">
-      {{ block.settings.atc_text }}
+      Add to cart
     </button>
 
   {% endform %}
