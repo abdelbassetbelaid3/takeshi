@@ -1,0 +1,79 @@
+{%- comment -%}
+  Product Details Component
+  Handles:
+  - Title
+  - Price
+  - Variants
+  - Quantity
+  - Add to Cart
+{%- endcomment -%}
+
+<div class="product-details" data-product-details>
+
+  <!-- TITLE -->
+  <h1 class="product-details__title">
+    {{ product.title }}
+  </h1>
+
+  <!-- PRICE -->
+  <div class="product-details__price">
+    {% render 'price', product: product %}
+  </div>
+
+  <!-- PRODUCT FORM -->
+  {% form 'product', product, class: 'product-form', data-product-form: '' %}
+
+    <!-- VARIANTS -->
+    {% if product.has_only_default_variant == false %}
+
+      <div class="product-details__variants">
+
+        {% for option in product.options_with_values %}
+
+          <div class="product-details__option">
+
+            <label class="product-details__label">
+              {{ option.name }}
+            </label>
+
+            <select name="options[{{ option.name }}]"
+                    class="product-details__select">
+
+              {% for value in option.values %}
+                <option value="{{ value }}">{{ value }}</option>
+              {% endfor %}
+
+            </select>
+
+          </div>
+
+        {% endfor %}
+
+      </div>
+
+    {% endif %}
+
+    <!-- QUANTITY -->
+    <div class="product-details__quantity">
+
+      <label>Quantity</label>
+
+      <input type="number"
+             name="quantity"
+             value="1"
+             min="1"
+             class="product-details__qty-input">
+
+    </div>
+
+    <!-- ADD TO CART -->
+    <button type="submit"
+            class="product-details__atc">
+
+      Add to cart
+
+    </button>
+
+  {% endform %}
+
+</div>
