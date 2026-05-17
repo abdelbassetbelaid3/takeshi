@@ -19,8 +19,8 @@
         "product_details_f473Ub": {
           "type": "product-details",
           "settings": {
-            "show_title": true,
-            "show_price": true,
+            "show_title": false,
+            "show_price": false,
             "atc_text": "Add to cart"
           }
         }
