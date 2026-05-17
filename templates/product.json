@@ -12,21 +12,24 @@
     "main": {
       "type": "product",
       "blocks": {
-        "product_slider_XKNpFK": {
-          "type": "product-slider",
+        "product_media_CftJNj": {
+          "type": "product-media",
           "settings": {}
+        },
+        "product_price_FGQPYq": {
+          "type": "product-price",
+          "settings": {
+            "alignment": "left"
+          }
         },
         "product_details_jy4TFT": {
           "type": "product-details",
-          "settings": {
-            "show_title": false,
-            "show_price": false,
-            "atc_text": "Adhhd to cart"
-          }
+          "settings": {}
         }
       },
       "block_order": [
-        "product_slider_XKNpFK",
+        "product_media_CftJNj",
+        "product_price_FGQPYq",
         "product_details_jy4TFT"
       ],
       "settings": {}
