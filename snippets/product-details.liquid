@@ -39,3 +39,25 @@
   {% endform %}
 
 </div>
+{% schema %}
+{
+  "name": "Details",
+  "settings": [],
+"blocks": [
+  {
+    "type": "Price",
+    "name": "Price",
+    "settings": []
+  }
+],
+  "presets": [
+    {
+      "name": "Price",
+      "blocks": [
+      { "type": "price" },
+    ]
+    }
+    
+  ]
+}
+{% endschema %}
