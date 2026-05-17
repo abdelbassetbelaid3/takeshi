@@ -9,9 +9,9 @@
 
     {% case block.type %}
 
-      {% when 'product-media-slider' %}
+      {% when 'product-slider' %}
         <div class="product-page__media" {{ block.shopify_attributes }}>
-          {% render 'product-media-slider', product: product %}
+          {% render 'product-slider', product: product %}
         </div>
 
 
