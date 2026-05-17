@@ -1,30 +1,9 @@
 <div class="product-details">
 
-  <h1 class="product-details__title">
-    {{ product.title }}
-  </h1>
 
   {% render 'product-price', product: product %}
 
-  {% form 'product', product %}
 
-    {% if product.has_only_default_variant == false %}
-      <select name="id">
-        {% for variant in product.variants %}
-          <option value="{{ variant.id }}">
-            {{ variant.title }}
-          </option>
-        {% endfor %}
-      </select>
-    {% endif %}
-
-    <input type="number" name="quantity" value="1" min="1">
-
-    <button type="submit">
-      Add to cart
-    </button>
-
-  {% endform %}
 
 </div>
 {% schema %}
