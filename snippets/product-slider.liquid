@@ -135,43 +135,55 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!root) return;
 
   const track = root.querySelector(".product-slider__track");
-  const slides = Array.from(root.querySelectorAll(".product-slider__slide"));
   const prev = root.querySelector(".product-slider__arrow--prev");
   const next = root.querySelector(".product-slider__arrow--next");
   const dotsWrap = root.querySelector(".product-slider__dots");
 
-  let index = 0;
+  let currentIndex = 1;
   let isAnimating = false;
 
-  const getStep = () => slides[0].offsetWidth + 10;
+  /* =========================
+     ORIGINAL SLIDES ONLY
+  ========================= */
+  const originalSlides = Array.from(track.querySelectorAll(".product-slider__slide"));
+
+  if (originalSlides.length <= 1) return;
 
   /* =========================
-     CLONE FIRST & LAST (INFINITE LOOP)
+     CLONES
   ========================= */
-
-  const firstClone = slides[0].cloneNode(true);
-  const lastClone = slides[slides.length - 1].cloneNode(true);
+  const firstClone = originalSlides[0].cloneNode(true);
+  const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
 
   firstClone.classList.add("is-clone");
   lastClone.classList.add("is-clone");
 
   track.appendChild(firstClone);
-  track.insertBefore(lastClone, slides[0]);
-
-  const allSlides = track.querySelectorAll(".product-slider__slide");
-
-  // Start at first real slide (skip cloned last)
-  let currentIndex = 1;
-
-  track.scrollTo({
-    left: getStep() * currentIndex,
-    behavior: "auto"
-  });
+  track.insertBefore(lastClone, originalSlides[0]);
 
   /* =========================
-     MOVE FUNCTION
+     ALL SLIDES (INCLUDING CLONES)
   ========================= */
+  const getAllSlides = () =>
+    Array.from(track.querySelectorAll(".product-slider__slide"));
 
+  const getStep = () => getAllSlides()[0].offsetWidth + 10;
+
+  /* =========================
+     INIT POSITION
+  ========================= */
+  const init = () => {
+    track.scrollTo({
+      left: getStep() * currentIndex,
+      behavior: "auto"
+    });
+  };
+
+  init();
+
+  /* =========================
+     GO TO SLIDE
+  ========================= */
   function goTo(i) {
     if (isAnimating) return;
     isAnimating = true;
@@ -184,57 +196,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setTimeout(() => {
-      handleLoopEdges();
+      fixLoopEdges();
       updateDots();
       isAnimating = false;
-    }, 300);
+    }, 350);
   }
 
   /* =========================
-     LOOP FIX (JUMP WITHOUT USER SEEING)
+     INFINITE LOOP FIX
   ========================= */
+  function fixLoopEdges() {
+    const all = getAllSlides();
 
-  function handleLoopEdges() {
-
-    // jumped to last clone → reset to real last
-    if (currentIndex === allSlides.length - 1) {
+    if (currentIndex === all.length - 1) {
       currentIndex = 1;
       track.scrollTo({
         left: getStep() * currentIndex,
-        behavior: "none"
+        behavior: "auto"
       });
     }
 
-    // jumped to first clone → reset to real first
     if (currentIndex === 0) {
-      currentIndex = allSlides.length - 2;
+      currentIndex = all.length - 2;
       track.scrollTo({
         left: getStep() * currentIndex,
-        behavior: "none"
+        behavior: "auto"
       });
     }
-
   }
 
   /* =========================
      NAVIGATION
   ========================= */
-
-  next.addEventListener("click", () => {
-    goTo(currentIndex + 1);
-  });
-
-  prev.addEventListener("click", () => {
-    goTo(currentIndex - 1);
-  });
+  next.addEventListener("click", () => goTo(currentIndex + 1));
+  prev.addEventListener("click", () => goTo(currentIndex - 1));
 
   /* =========================
-     DOTS (ignore clones)
+     DOTS
   ========================= */
+  const total = originalSlides.length;
 
-  const realSlidesCount = slides.length;
-
-  for (let i = 0; i < realSlidesCount; i++) {
+  for (let i = 0; i < total; i++) {
     const dot = document.createElement("button");
     dot.className = "product-slider__dot";
     dot.addEventListener("click", () => goTo(i + 1));
@@ -246,8 +248,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let realIndex = currentIndex - 1;
 
-    if (realIndex < 0) realIndex = realSlidesCount - 1;
-    if (realIndex >= realSlidesCount) realIndex = 0;
+    if (realIndex < 0) realIndex = total - 1;
+    if (realIndex >= total) realIndex = 0;
 
     dots.forEach((dot, i) => {
       dot.classList.toggle("is-active", i === realIndex);
