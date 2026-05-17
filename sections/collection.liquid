@@ -1,95 +1,173 @@
 {% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  Collection template
 {% endcomment %}
 
-<h1 class="collection">{{ collection.title }}</h1>
+<h1 class="collection-title">{{ collection.title }}</h1>
 
-<div class="collection-products collection">
+<div class="collection-products">
+
   {% paginate collection.products by 20 %}
+
     {% for product in collection.products %}
-<div class="collection-product">
 
-  <a href="{{ product.url }}" class="collection-product__image-wrapper">
+      <div class="collection-product">
 
-    {% if product.featured_image %}
-      <img 
-        class="collection-product__image main-img"
-        src="{{ product.featured_image | image_url: width: 400 }}"
-        alt="{{ product.title }}"
-      >
-    {% endif %}
+        <a href="{{ product.url }}" class="collection-product__image-wrapper">
 
-    {% if product.images[1] %}
-      <img 
-        class="collection-product__image hover-img"
-        src="{{ product.images[1] | image_url: width: 400 }}"
-        alt="{{ product.title }}"
-      >
-    {% endif %}
+          {% if product.featured_image %}
+            <img
+              class="collection-product__image main-img"
+              src="{{ product.featured_image | image_url: width: 900 }}"
+              alt="{{ product.title }}"
+              loading="lazy"
+            >
+          {% endif %}
 
-  </a>
+          {% if product.images[1] %}
+            <img
+              class="collection-product__image hover-img"
+              src="{{ product.images[1] | image_url: width: 900 }}"
+              alt="{{ product.title }}"
+              loading="lazy"
+            >
+          {% endif %}
 
-  <div class="collection-product__content">
-    <p>{{ product.title | escape | link_to: product.url }}</p>
-    <p>{{ product.price | money }}</p>
-  </div>
+        </a>
 
-</div>
+        <div class="collection-product__content">
+          <p>
+            {{ product.title | escape | link_to: product.url }}
+          </p>
+
+          <p>{{ product.price | money }}</p>
+        </div>
+
+      </div>
+
     {% endfor %}
 
     {{ paginate | default_pagination }}
+
   {% endpaginate %}
+
 </div>
 
 {% stylesheet %}
-  .collection{
-    margin-inline: 10%;
-    margin-block: 20px;
-  }
-  .collection-products {
-    display: grid;
-    grid-template-columns: 33% ,33%,33%;
-    gap: 1%;
-  }
-  .collection-product__image-wrapper{
+
+/* PAGE */
+
+.collection-title{
+  margin: 40px 5%;
+  font-size: 32px;
+}
+
+
+/* GRID */
+
+.collection-products{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+
+  margin-inline: 5%;
+}
+
+
+/* CARD */
+
+.collection-product{
+  width: 100%;
+}
+
+
+/* IMAGE WRAPPER */
+
+.collection-product__image-wrapper{
   position: relative;
   display: block;
   overflow: hidden;
 }
 
+
+/* IMAGES */
+
 .collection-product__image{
-  width: 425px;
-  height: 750px;
+  width: 100%;
+  aspect-ratio: 2 / 3; /* portrait */
+
   object-fit: cover;
-  transition: 0.4s ease;
+  display: block;
+
+  transition: 0.45s ease;
 }
 
-/* hover image hidden */
+
+/* HOVER IMAGE */
+
 .hover-img{
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+
   opacity: 0;
 }
 
-/* hover effect */
+
+/* HOVER EFFECT */
+
 .collection-product__image-wrapper:hover .main-img{
   opacity: 0;
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .collection-product__image-wrapper:hover .hover-img{
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
+
+
+/* CONTENT */
+
+.collection-product__content{
+  padding-top: 12px;
+}
+
+.collection-product__content p{
+  margin: 4px 0;
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px){
+
+  .collection-products{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px){
+
+  .collection-products{
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .collection-title{
+    margin: 20px 5%;
+    font-size: 24px;
+  }
+
+}
+
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.collection",
+  "name": "Collection",
   "settings": []
 }
 {% endschema %}
