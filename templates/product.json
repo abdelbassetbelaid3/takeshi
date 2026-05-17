@@ -11,6 +11,15 @@
   "sections": {
     "main": {
       "type": "product",
+      "blocks": {
+        "product_slider_XKNpFK": {
+          "type": "product-slider",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "product_slider_XKNpFK"
+      ],
       "settings": {}
     },
     "related_products": {
