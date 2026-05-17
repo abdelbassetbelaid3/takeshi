@@ -1,14 +1,6 @@
-<div class="product-details">
-
-
-  {% render 'product-price', product: product %}
-
-
-
-</div>
 {% schema %}
 {
-  "name": "Product Main",
+  "name": "Product Main (OS)",
   "blocks": [
     {
       "type": "product-media",
@@ -16,21 +8,20 @@
     },
     {
       "type": "product-details",
-      "name": "Product Details",
-
-      "blocks": [
-        {
-          "type": "price",
-          "name": "Price Block"
-        }
-      ],
-
-      "block_order": ["price"]
+      "name": "Product Details"
+    },
+    {
+      "type": "product-price",
+      "name": "Price Block"
+    },
+    {
+      "type": "add-to-cart",
+      "name": "Add to Cart"
     }
   ],
   "presets": [
     {
-      "name": "Product Page"
+      "name": "OS Product Page"
     }
   ]
 }

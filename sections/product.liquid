@@ -11,22 +11,23 @@
 
     {% case block.type %}
 
-      {%- when 'product-media' -%}
-        <div class="product-page__media" {{ block.shopify_attributes }}>
-          {% render 'product-slider', product: product %}
-        </div>
+      {% when 'product-media' %}
+        {% render 'product-slider', product: product %}
 
-      {%- when 'product-details' -%}
-        <div class="product-page__details" {{ block.shopify_attributes }}>
-          {% render 'product-details', product: product %}
-        </div>
+      {% when 'product-details' %}
+        {% render 'product-details', product: product, block: block %}
+
+      {% when 'product-price' %}
+        {% render 'product-price-block', product: product, block: block %}
+
+      {% when 'add-to-cart' %}
+        {% render 'product-atc', product: product %}
 
     {% endcase %}
 
   {% endfor %}
 
 </div>
-
   <section class="summary-item guide">
   
     {{ product.description }}
