@@ -51,26 +51,85 @@
     {% endif %}
   {% endfor %}
 {% endunless %}
-  {% form 'product', product, id: 'product-form' %}
 
 
-   <div class="quantity-selector">
-  <button type="button" class="qty-btn minus">−</button>
-  
-  <input 
-    type="number" 
-    name="quantity" 
-    min="1" 
-    value="1" 
-    class="qty-input"
-  >
-  
-  <button type="button" class="qty-btn plus">+</button>
+<div class="product-info">
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+
+      {% when 'title' %}
+        {% if block.settings.show %}
+          <h1 {{ block.shopify_attributes }}>
+            {{ product.title }}
+          </h1>
+        {% endif %}
+
+      {% when 'price' %}
+        {% if block.settings.show %}
+          <p {{ block.shopify_attributes }}>
+            {{ product.price | money }}
+          </p>
+        {% endif %}
+
+      {% when 'variant_picker' %}
+        {% if block.settings.show %}
+          <div {{ block.shopify_attributes }}>
+            {% unless product.has_only_default_variant %}
+              {% for option in product.options_with_values %}
+                <div class="variant-wrapper">
+                  <label>{{ option.name }}</label>
+
+                  <div class="variant-buttons">
+                    {% for value in option.values %}
+                      {% assign v = product.variants | where: "option1", value | first %}
+
+                      <button type="button"
+                        class="variant-btn"
+                        data-variant-id="{{ v.id }}">
+                        {{ value }}
+                      </button>
+
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            {% endunless %}
+          </div>
+        {% endif %}
+
+      {% when 'buy_buttons' %}
+        {% if block.settings.show %}
+          <div {{ block.shopify_attributes }}>
+            {% form 'product', product %}
+
+              <input type="hidden" name="id"
+                value="{{ product.selected_or_first_available_variant.id }}">
+
+              <button type="submit" class="add-to-cart">
+                Add to cart
+              </button>
+
+              {{ form | payment_button }}
+
+            {% endform %}
+          </div>
+        {% endif %}
+
+      {% when 'description' %}
+        {% if block.settings.show %}
+          <div {{ block.shopify_attributes }}>
+            {{ product.description }}
+          </div>
+        {% endif %}
+
+      {% when 'divider' %}
+        <hr {{ block.shopify_attributes }}>
+
+    {% endcase %}
+  {% endfor %}
+
 </div>
-    {{ form | payment_button }}
-
-    <input type="submit" value="Add to cart" class="add-to-cart">
-  {% endform %}
   </section>
   <section class="summary-item guide">
   
@@ -431,56 +490,84 @@ document.addEventListener('DOMContentLoaded', function () {
 {% schema %}
 {
   "name": "t:general.product",
-  "settings": [
-  {
-    "type": "checkbox",
-    "id": "show_title",
-    "label": "Show Product Title",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_price",
-    "label": "Show Price",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_gallery",
-    "label": "Show Product Images",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_variants",
-    "label": "Show Variants",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_quantity",
-    "label": "Show Quantity Selector",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_atc",
-    "label": "Show Add to Cart",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_payment",
-    "label": "Show Buy Now (Shop Pay)",
-    "default": true
-  },
-  {
-    "type": "checkbox",
-    "id": "show_description",
-    "label": "Show Description",
-    "default": true
-  }
-],
+  "settings": [],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "Show title",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "Show price",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "Show variants",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "Show buy button",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Product description",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show",
+          "label": "Show description",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product information",
+      "blocks": [
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "variant_picker" },
+        { "type": "buy_buttons" },
+        { "type": "description" }
+      ],}
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }
