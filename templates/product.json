@@ -11,6 +11,20 @@
   "sections": {
     "main": {
       "type": "product",
+      "blocks": {
+        "product_slider_tPfRHk": {
+          "type": "product-slider",
+          "settings": {}
+        },
+        "product_slider_6ddXNa": {
+          "type": "product-slider",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "product_slider_tPfRHk",
+        "product_slider_6ddXNa"
+      ],
       "settings": {}
     },
     "related_products": {
