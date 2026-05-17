@@ -9,17 +9,9 @@
  */
 {
   "sections": {
-"main": {
-      "type": "product-main",
-      "blocks": {
-        "media": {
-          "type": "product-media-slider"
-        },
-        "details": {
-          "type": "product-details"
-        }
-      },
-      "block_order": ["media", "details"]
+    "main": {
+      "type": "product",
+      "settings": {}
     },
     "related_products": {
       "type": "related-products",
