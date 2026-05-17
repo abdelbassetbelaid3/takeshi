@@ -12,12 +12,21 @@
     "main": {
       "type": "product",
       "blocks": {
+        "product_details_f473Ub": {
+          "type": "product-details",
+          "settings": {
+            "show_title": true,
+            "show_price": true,
+            "atc_text": "Add to cart"
+          }
+        },
         "product_slider_XKNpFK": {
           "type": "product-slider",
           "settings": {}
         }
       },
       "block_order": [
+        "product_details_f473Ub",
         "product_slider_XKNpFK"
       ],
       "settings": {}
