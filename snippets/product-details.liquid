@@ -1,38 +1,26 @@
-<div class="product-details" data-product-details>
+<div class="product-details">
 
-  <!-- TITLE -->
   <h1 class="product-details__title">
     {{ product.title }}
   </h1>
 
-  <!-- PRICE -->
-  <div class="product-details__price">
-    {% render 'price', product: product %}
-  </div>
+  {% render 'product-price', product: product %}
 
-  <!-- PRODUCT FORM -->
-  {% form 'product', product, class: 'product-form' %}
+  {% form 'product', product %}
 
-    <!-- VARIANTS -->
     {% if product.has_only_default_variant == false %}
-      <select name="id" class="product-details__variant">
+      <select name="id">
         {% for variant in product.variants %}
           <option value="{{ variant.id }}">
-            {{ variant.title }} - {{ variant.price | money }}
+            {{ variant.title }}
           </option>
         {% endfor %}
       </select>
     {% endif %}
 
-    <!-- QUANTITY -->
-    <input type="number"
-           name="quantity"
-           value="1"
-           min="1"
-           class="product-details__qty">
+    <input type="number" name="quantity" value="1" min="1">
 
-    <!-- ADD TO CART -->
-    <button type="submit" class="product-details__atc">
+    <button type="submit">
       Add to cart
     </button>
 
@@ -41,23 +29,30 @@
 </div>
 {% schema %}
 {
-  "name": "product-details",
-  "settings": [],
-"blocks": [
-  {
-    "type": "price",
-    "name": "price",
-    "settings": []
-  }
-],
+  "name": "Product Main",
+  "blocks": [
+    {
+      "type": "product-media",
+      "name": "Product Media"
+    },
+    {
+      "type": "product-details",
+      "name": "Product Details",
+
+      "blocks": [
+        {
+          "type": "price",
+          "name": "Price Block"
+        }
+      ],
+
+      "block_order": ["price"]
+    }
+  ],
   "presets": [
     {
-      "name": "price",
-      "blocks": [
-      { "type": "price" },
-    ]
+      "name": "Product Page"
     }
-    
   ]
 }
 {% endschema %}

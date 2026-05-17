@@ -5,22 +5,27 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
+<div class="product-page">
+
   {% for block in section.blocks %}
 
     {% case block.type %}
 
-      {% when 'product-slider' %}
+      {%- when 'product-media' -%}
         <div class="product-page__media" {{ block.shopify_attributes }}>
           {% render 'product-slider', product: product %}
         </div>
-   {% when 'product-details' %}
+
+      {%- when 'product-details' -%}
         <div class="product-page__details" {{ block.shopify_attributes }}>
-          {% render 'product-details', product: product, block: block %}
+          {% render 'product-details', product: product %}
         </div>
 
     {% endcase %}
 
   {% endfor %}
+
+</div>
 
   <section class="summary-item guide">
   
