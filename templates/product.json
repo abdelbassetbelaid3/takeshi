@@ -12,6 +12,10 @@
     "main": {
       "type": "product",
       "blocks": {
+        "product_slider_XKNpFK": {
+          "type": "product-slider",
+          "settings": {}
+        },
         "product_details_jy4TFT": {
           "type": "product-details",
           "settings": {
@@ -19,15 +23,11 @@
             "show_price": false,
             "atc_text": "Adhhd to cart"
           }
-        },
-        "product_slider_XKNpFK": {
-          "type": "product-slider",
-          "settings": {}
         }
       },
       "block_order": [
-        "product_details_jy4TFT",
-        "product_slider_XKNpFK"
+        "product_slider_XKNpFK",
+        "product_details_jy4TFT"
       ],
       "settings": {}
     },
