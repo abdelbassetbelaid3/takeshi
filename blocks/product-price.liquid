@@ -1,0 +1,24 @@
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+<div class="product-price" {{ block.shopify_attributes }}>
+
+  {% render 'price',
+    product: product,
+    variant: variant
+  %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Product price",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Show compare price",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

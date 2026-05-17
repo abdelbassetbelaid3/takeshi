@@ -1,115 +1,15 @@
-{% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
-{% endcomment %}
-
 <div class="product-page">
 
-  {% for block in section.blocks %}
-
-    {% case block.type %}
-
-      {% when 'product-media' %}
-        {% render 'product-media',
-          product: product,
-          block: block
-        %}
-
-      {% when 'product-details' %}
-        {% render 'product-details',
-          product: product,
-          block: block
-        %}
-
-      {% when 'product-price' %}
-        {% render 'product-price-block',
-          product: product,
-          block: block
-        %}
-
-    {% endcase %}
-
-  {% endfor %}
+  {% content_for 'blocks' %}
 
 </div>
-  <section class="summary-item guide">
-  
-    {{ product.description }}
-
-  
-  <h3>🛒 How to Order</h3>
-  <p>Select your size and quantity
-Click Order Now and fill in your details
-We’ll contact you to confirm your order
-Pay Cash on Delivery</p>
-  <h3>📞 Need Help?</h3>
-  <p>For any questions, feel free to contact us or reach us on WhatsApp anytime.</p>
-  </section>
-</div>
-
-{% stylesheet %}
-.guide{
-  display: flex;
-  flex-direction: column;
-}
-.guide > p:first-child{
-  flex: 1;
-}
-
-
-{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.product",
-  "settings": [],
-
+  "name": "Product page",
   "blocks": [
     {
-      "type": "product-media",
-      "name": "Product Media"
-    },
-    {
-      "type": "product-details",
-      "name": "Product Details"
-    },
-    {
-      "type": "product-price",
-      "name": "Product Price",
-      "settings": [
-        {
-          "type": "select",
-          "id": "alignment",
-          "label": "Alignment",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "left"
-        }
-      ]
-    }
-  ],
-
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
-
-  "presets": [
-    {
-      "name": "Product Page"
+      "type": "@theme"
     }
   ]
 }
