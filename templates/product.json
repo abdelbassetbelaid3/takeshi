@@ -13,7 +13,7 @@
       "type": "product-main",
       "blocks": {
         "media": {
-          "type": "product-media"
+          "type": "product-media-slider"
         },
         "details": {
           "type": "product-details"
