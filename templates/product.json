@@ -12,12 +12,17 @@
     "main": {
       "type": "product",
       "blocks": {
+        "product_slider_hV6Upd": {
+          "type": "product-slider",
+          "settings": {}
+        },
         "product_slider_XKNpFK": {
           "type": "product-slider",
           "settings": {}
         }
       },
       "block_order": [
+        "product_slider_hV6Upd",
         "product_slider_XKNpFK"
       ],
       "settings": {}
