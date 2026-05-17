@@ -9,9 +9,17 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "product",
-      "settings": {}
+"main": {
+      "type": "product-main",
+      "blocks": {
+        "media": {
+          "type": "product-media"
+        },
+        "details": {
+          "type": "product-details"
+        }
+      },
+      "block_order": ["media", "details"]
     },
     "related_products": {
       "type": "related-products",
