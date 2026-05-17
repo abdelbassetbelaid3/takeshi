@@ -1,21 +1,89 @@
-<div class="product-page">
+{%- comment -%}
+  Product Details Block
+  - Title
+  - Price
+  - ATC form
+  - Controlled via schema settings
+{%- endcomment -%}
 
-  {% for block in section.blocks %}
+<div class="product-details" data-product-details>
 
-    {% case block.type %}
+  {% if block.settings.show_title %}
+    <h1 class="product-details__title">
+      {{ product.title }}
+    </h1>
+  {% endif %}
 
-      {% when 'product-media' %}
-        <div class="product-page__media" {{ block.shopify_attributes }}>
-          {% render 'product-media-slider', product: product %}
-        </div>
+  {% if block.settings.show_price %}
+    {% render 'price', product: product %}
+  {% endif %}
 
-      {% when 'product-details' %}
-        <div class="product-page__details" {{ block.shopify_attributes }}>
-          {% render 'product-details', product: product %}
-        </div>
+  {% form 'product', product, class: 'product-form' %}
 
-    {% endcase %}
+    {% if product.has_only_default_variant == false %}
 
-  {% endfor %}
+      <select name="id" class="product-details__variant-select">
+
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}">
+            {{ variant.title }} - {{ variant.price | money }}
+          </option>
+        {% endfor %}
+
+      </select>
+
+    {% endif %}
+
+    <input type="number"
+           name="quantity"
+           value="1"
+           min="1"
+           class="product-details__qty">
+
+    <button type="submit" class="product-details__atc">
+      {{ block.settings.atc_text }}
+    </button>
+
+  {% endform %}
 
 </div>
+{% schema %}
+{
+  "name": "Product Main",
+  "blocks": [
+    {
+      "type": "product-media",
+      "name": "Product Media"
+    },
+    {
+      "type": "product-details",
+      "name": "Product Details",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_title",
+          "label": "Show Title",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show Price",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "atc_text",
+          "label": "Add to cart text",
+          "default": "Add to cart"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Main"
+    }
+  ]
+}
+{% endschema %}
