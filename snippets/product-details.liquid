@@ -1,28 +1,55 @@
-{% schema %}
-{
-  "name": "Product Main (OS)",
-  "blocks": [
-    {
-      "type": "product-media",
-      "name": "Product Media"
-    },
-    {
-      "type": "product-details",
-      "name": "Product Details"
-    },
-    {
-      "type": "product-price",
-      "name": "Price Block"
-    },
-    {
-      "type": "add-to-cart",
-      "name": "Add to Cart"
-    }
-  ],
-  "presets": [
-    {
-      "name": "OS Product Page"
-    }
-  ]
-}
-{% endschema %}
+<div class="product-details">
+
+  <!-- TITLE -->
+  <h1 class="product-details__title">
+    {{ product.title }}
+  </h1>
+
+  <!-- VENDOR (optional) -->
+  {% if product.vendor != blank %}
+    <div class="product-details__vendor">
+      {{ product.vendor }}
+    </div>
+  {% endif %}
+
+  <!-- PRICE BLOCK (WRAPPER SYSTEM) -->
+  {% for block in section.blocks %}
+    {% if block.type == 'product-price' %}
+      {% render 'product-price-block',
+        product: product,
+        block: block
+      %}
+    {% endif %}
+  {% endfor %}
+
+  <!-- VARIANTS -->
+  {% form 'product', product, class: 'product-form' %}
+
+    {% if product.has_only_default_variant == false %}
+      <select name="id" class="product-details__variant">
+
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}"
+            {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+            {{ variant.title }}
+          </option>
+        {% endfor %}
+
+      </select>
+    {% endif %}
+
+    <!-- QUANTITY -->
+    <input type="number"
+           name="quantity"
+           value="1"
+           min="1"
+           class="product-details__qty">
+
+    <!-- ADD TO CART -->
+    <button type="submit" class="product-details__atc">
+      Add to cart
+    </button>
+
+  {% endform %}
+
+</div>

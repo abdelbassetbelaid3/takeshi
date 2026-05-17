@@ -12,16 +12,22 @@
     {% case block.type %}
 
       {% when 'product-media' %}
-        {% render 'product-slider', product: product %}
+        {% render 'product-media',
+          product: product,
+          block: block
+        %}
 
       {% when 'product-details' %}
-        {% render 'product-details', product: product, block: block %}
+        {% render 'product-details',
+          product: product,
+          block: block
+        %}
 
       {% when 'product-price' %}
-        {% render 'product-price-block', product: product, block: block %}
-
-      {% when 'add-to-cart' %}
-        {% render 'product-atc', product: product %}
+        {% render 'product-price-block',
+          product: product,
+          block: block
+        %}
 
     {% endcase %}
 
@@ -55,22 +61,56 @@ Pay Cash on Delivery</p>
 
 {% endstylesheet %}
 
-
 {% schema %}
 {
   "name": "t:general.product",
   "settings": [],
+
   "blocks": [
     {
-      "type": "product-slider",
-      "name": "Product Media Slider"
+      "type": "product-media",
+      "name": "Product Media"
     },
-   {
+    {
       "type": "product-details",
-      "name": "Product Details",
-      "settings": [],
-      "disabled_on": {
-      "groups": ["header", "footer"]
+      "name": "Product Details"
+    },
+    {
+      "type": "product-price",
+      "name": "Product Price",
+      "settings": [
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        }
+      ]
     }
-]
+  ],
+
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+
+  "presets": [
+    {
+      "name": "Product Page"
+    }
+  ]
+}
 {% endschema %}

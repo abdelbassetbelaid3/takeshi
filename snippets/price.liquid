@@ -1,15 +1,25 @@
-{%- assign variant = product.selected_or_first_available_variant -%}
+{%- liquid
+  assign current_variant = variant | default: product.selected_or_first_available_variant
+-%}
 
 <div class="price">
 
-  <span class="price__current">
-    {{ variant.price | money }}
-  </span>
-
-  {% if variant.compare_at_price > variant.price %}
-    <span class="price__compare">
-      {{ variant.compare_at_price | money }}
+  {% if current_variant.compare_at_price > current_variant.price %}
+    
+    <span class="price__sale">
+      {{ current_variant.price | money }}
     </span>
+
+    <span class="price__compare">
+      {{ current_variant.compare_at_price | money }}
+    </span>
+
+  {% else %}
+
+    <span class="price__regular">
+      {{ current_variant.price | money }}
+    </span>
+
   {% endif %}
 
 </div>
