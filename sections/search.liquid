@@ -1,105 +1,345 @@
 {% comment %}
-  This section is used in the search template to render search results for
-  products, articles, and pages.
-
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/search
+  Search template
 {% endcomment %}
 
-<h1 class="margin">{{ 'search.title' | t }}</h1>
+<div class="search-page">
+
+  <!-- SEARCH FORM -->
+  <form action="{{ routes.search_url }}" method="get" class="search-form">
+
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="Search products..."
+      class="search-input"
+    >
+
+    <button type="submit" class="search-button">
+      Search
+    </button>
+
+  </form>
 
 
+  <!-- RESULTS TITLE -->
+  {% if search.performed %}
+    <h1 class="search-title">
+      Results for "{{ search.terms }}"
+    </h1>
+  {% endif %}
 
-{% if search.performed %}
-  {% if search.results_count == 0 %}
-    <p class="margin">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
-  {% else %}
-    <p class="margin">{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
 
-    <div class="search-results">
-      {% paginate search.results by 20 %}
-        {% # Search result items may be an article, a page, or a product. %}
-        {% for result in search.results %}
-          <div class="search-result search-result__image-wrapper">
-            {% assign featured_image = result.featured_image | default: result.image %}
-            {% if featured_image %}
-              {% render 'image', class: 'search-result__image main-img', image: featured_image, url: result.url, width: 400 %}
-            {% endif %}
-            {% if featured_image[1] %}
-              {% render 'image', class: 'search-result__image hover-img', image: featured_image[1], url: result.url, width: 400 %}
-            {% endif %}
-            <div class="search-result__content">
-              <p>
-                {{ result.title | link_to: result.url }}
-                {% if result.price %}
-                  {{ result.price | money_with_currency }}
+  <!-- PRODUCTS GRID -->
+  <div class="search-products">
+
+    {% paginate search.results by 20 %}
+
+      {% for item in search.results %}
+
+        {% if item.object_type == 'product' %}
+
+          <div class="search-product">
+
+            <a href="{{ item.url }}" class="search-product__image-wrapper">
+
+              {% if item.featured_image %}
+
+                <!-- MAIN IMAGE -->
+                <img
+                  class="search-product__image main-img"
+                  src="{{ item.featured_image | image_url: width: 900 }}"
+                  alt="{{ item.title }}"
+                  loading="lazy"
+                >
+
+                <!-- SECOND IMAGE -->
+                {% if item.images[1] %}
+                  <img
+                    class="search-product__image hover-img"
+                    src="{{ item.images[1] | image_url: width: 900 }}"
+                    alt="{{ item.title }}"
+                    loading="lazy"
+                  >
                 {% endif %}
+
+              {% else %}
+
+                <!-- PLACEHOLDER -->
+                <div class="search-product__placeholder">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+
+              {% endif %}
+
+            </a>
+
+
+            <!-- INFO -->
+            <div class="search-product__content">
+
+              <p class="search-product__title">
+                {{ item.title | escape | link_to: item.url }}
               </p>
+
+              <p class="search-product__price">
+                {{ item.price | money }}
+              </p>
+
             </div>
+
           </div>
 
-        {% endfor %}
+        {% endif %}
 
-        {{ paginate | default_pagination }}
-      {% endpaginate %}
-    </div>
-  {% endif %}
-{% endif %}
+      {% endfor %}
+
+      {{ paginate | default_pagination }}
+
+    {% endpaginate %}
+
+  </div>
+
+</div>
+
 
 {% stylesheet %}
-  .margin{
-        margin-inline: 10%;
-    margin-block: 20px;
-  }
-  .search-results {
-    display: grid;
-    grid-template-columns: 33% ,33%,33%;
-    gap: 1%;
-    margin-inline: 10%;
-    margin-block: 20px;
-  }
-  .search-results .prev,
-  .search-results .page,
-  .search-results .next {
-    grid-column: 1 / -1;
-  }
+
+/* =========================
+   PAGE
+========================= */
+
+.search-page{
+  margin: 40px 5%;
+}
 
 
-.search-result__image-wrapper{
+/* =========================
+   SEARCH FORM
+========================= */
+
+.search-form{
+  display: flex;
+  gap: 10px;
+
+  margin-bottom: 40px;
+}
+
+.search-input{
+  flex: 1;
+
+  height: 50px;
+
+  border: 1px solid #ddd;
+
+  padding-inline: 15px;
+
+  font-size: 16px;
+}
+
+.search-button{
+  height: 50px;
+
+  border: none;
+
+  background: #000;
+
+  color: #fff;
+
+  padding-inline: 24px;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.search-title{
+  margin-bottom: 30px;
+
+  font-size: 28px;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.search-products{
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.search-product{
+  width: 100%;
+}
+
+
+/* =========================
+   IMAGE WRAPPER
+========================= */
+
+.search-product__image-wrapper{
   position: relative;
+
   display: block;
+
   overflow: hidden;
 }
 
-.search-result__image{
-  width: 425px;
-  height: 750px;
+
+/* =========================
+   IMAGES
+========================= */
+
+.search-product__image{
+  width: 100%;
+
+  aspect-ratio: 2 / 3;
+
   object-fit: cover;
-  transition: 0.4s ease;
+
+  display: block;
+
+  transition: 0.45s ease;
 }
 
-/* hover image hidden */
+
+/* =========================
+   HOVER IMAGE
+========================= */
+
 .hover-img{
   position: absolute;
-  top: 0;
-  left: 0;
+
+  inset: 0;
+
   opacity: 0;
 }
 
-/* hover effect */
-.search-result__image-wrapper:hover .main-img{
+
+/* =========================
+   HOVER EFFECT
+========================= */
+
+.search-product__image-wrapper:hover .main-img{
   opacity: 0;
-  transform: scale(1.08);
+
+  transform: scale(1.06);
 }
 
-.search-result__image-wrapper:hover .hover-img{
+.search-product__image-wrapper:hover .hover-img{
   opacity: 1;
-  transform: scale(1.08);
+
+  transform: scale(1.06);
 }
+
+
+/* =========================
+   PLACEHOLDER
+========================= */
+
+.search-product__placeholder{
+  width: 100%;
+
+  aspect-ratio: 2 / 3;
+
+  background: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-product__placeholder svg{
+  width: 50%;
+  height: 50%;
+
+  opacity: 0.3;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.search-product__content{
+  padding-top: 12px;
+}
+
+.search-product__title{
+  margin: 0 0 6px;
+
+  font-size: 16px;
+}
+
+.search-product__title a{
+  text-decoration: none;
+
+  color: #000;
+}
+
+.search-product__price{
+  margin: 0;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px){
+
+  .search-products{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px){
+
+  .search-page{
+    margin: 20px 15px;
+  }
+
+  .search-products{
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+  .search-form{
+    flex-direction: column;
+  }
+
+  .search-button{
+    width: 100%;
+  }
+
+}
+
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.search",
+  "name": "Search",
   "settings": []
 }
 {% endschema %}
