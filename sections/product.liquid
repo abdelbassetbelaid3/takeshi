@@ -5,6 +5,19 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
+  {% for block in section.blocks %}
+
+    {% case block.type %}
+
+      {% when 'product-media-slider' %}
+        <div class="product-page__media" {{ block.shopify_attributes }}>
+          {% render 'product-media-slider', product: product %}
+        </div>
+
+
+    {% endcase %}
+
+  {% endfor %}
 
 <div class="summary">
   <section class="summary-item">
