@@ -21,7 +21,12 @@
        aria-label="Image pagination"></div>
 
 </div>
+
 {% stylesheet %}
+
+/* =========================
+   SLIDER BASE
+========================= */
 
 .product-slider {
   position: relative;
@@ -43,11 +48,31 @@
   display: none;
 }
 
+/* DEFAULT (mobile) */
 .product-slider__slide {
   flex: 0 0 100%;
   scroll-snap-align: center;
 }
 
+/* =========================
+   TABLET (2 SLIDES)
+========================= */
+@media (min-width: 768px) {
+  .product-slider__slide {
+    flex: 0 0 50%;
+  }
+}
+
+/* =========================
+   DESKTOP (3 PORTRAIT MODE)
+========================= */
+@media (min-width: 1024px) {
+  .product-slider__slide {
+    flex: 0 0 33.333%;
+  }
+}
+
+/* IMAGE */
 .product-image img {
   width: 100%;
   height: 650px;
@@ -55,7 +80,10 @@
   display: block;
 }
 
-/* ARROWS */
+/* =========================
+   ARROWS
+========================= */
+
 .product-slider__arrow {
   position: absolute;
   top: 50%;
@@ -73,7 +101,10 @@
 .product-slider__arrow--prev { left: 10px; }
 .product-slider__arrow--next { right: 10px; }
 
-/* DOTS */
+/* =========================
+   DOTS
+========================= */
+
 .product-slider__dots {
   position: absolute;
   bottom: 10px;
@@ -98,6 +129,7 @@
 }
 
 {% endstylesheet %}
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
