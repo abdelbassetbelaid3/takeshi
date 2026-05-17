@@ -13,65 +13,15 @@
         <div class="product-page__media" {{ block.shopify_attributes }}>
           {% render 'product-slider', product: product %}
         </div>
-
+   {% when 'product-details' %}
+        <div class="product-page__details" {{ block.shopify_attributes }}>
+          {% render 'product-details', product: product, block: block %}
+        </div>
 
     {% endcase %}
 
   {% endfor %}
 
-<div class="summary">
-  <section class="summary-item">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <input type="hidden" name="id" id="selectedVariant" value="{{ product.selected_or_first_available_variant.id }}">
-{% unless product.has_only_default_variant %}
-  {% for option in product.options_with_values %}
-    {% if option.name contains 'Size' or option.name contains 'size' %}
-
-      <div class="variant-wrapper">
-        <label class="variant-label">{{ option.name }}</label>
-
-        <div class="variant-buttons">
-          {% for value in option.values %}
-            {% assign variant_for_value = product.variants | where: "option1", value | first %}
-
-            <button
-              type="button"
-              class="variant-btn {% if variant_for_value.available == false %}soldout{% endif %}"
-              data-variant-id="{{ variant_for_value.id }}"
-              {% if variant_for_value.available == false %}disabled{% endif %}
-            >
-              {{ value }}
-            </button>
-          {% endfor %}
-        </div>
-
-      </div>
-
-    {% endif %}
-  {% endfor %}
-{% endunless %}
-  {% form 'product', product, id: 'product-form' %}
-
-
-   <div class="quantity-selector">
-  <button type="button" class="qty-btn minus">−</button>
-  
-  <input 
-    type="number" 
-    name="quantity" 
-    min="1" 
-    value="1" 
-    class="qty-input"
-  >
-  
-  <button type="button" class="qty-btn plus">+</button>
-</div>
-    {{ form | payment_button }}
-
-    <input type="submit" value="Add to cart" class="add-to-cart">
-  {% endform %}
-  </section>
   <section class="summary-item guide">
   
     {{ product.description }}
@@ -435,7 +385,31 @@ document.addEventListener('DOMContentLoaded', function () {
   "blocks": [{
       "type": "product-slider",
       "name": "Product Media Slider"
-    },],
+    },
+   {
+      "type": "product-details",
+      "name": "Product Details",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_title",
+          "label": "Show Title",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show Price",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "atc_text",
+          "label": "ATC Text",
+          "default": "Add to cart"
+        }
+      ]
+    }],
   "disabled_on": {
     "groups": ["header", "footer"]
   }
