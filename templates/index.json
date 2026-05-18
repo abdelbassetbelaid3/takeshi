@@ -15,18 +15,21 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/untitled_File_2026-05-13_01-24-12.png",
             "link": ""
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/untitled_Flux_2_Max_2026-05-10_14-21-34-Recovered.png",
             "link": ""
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/untitled_Flux_2_Max_2026-05-10_14-50-07.png",
             "link": ""
           }
         }
@@ -49,17 +52,6 @@
     },
     "1778974593699db8a6": {
       "type": "apps",
-      "blocks": {
-        "releasit_cod_form_button_app_block_7K4Tmg": {
-          "type": "shopify://apps/releasit-cod-form/blocks/button-app-block/72faf214-4174-4fec-886b-0d0e8d3af9a2",
-          "settings": {
-            "product": ""
-          }
-        }
-      },
-      "block_order": [
-        "releasit_cod_form_button_app_block_7K4Tmg"
-      ],
       "settings": {}
     }
   },
