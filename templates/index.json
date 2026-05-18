@@ -32,12 +32,20 @@
             "image": "shopify://shop_images/untitled_Flux_2_Max_2026-05-10_14-50-07.png",
             "link": ""
           }
+        },
+        "slide_F6K43d": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/untitled_Flux2Max_2026-05-10_14-42-47.png",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "slide_1",
         "slide_2",
-        "slide_3"
+        "slide_3",
+        "slide_F6K43d"
       ],
       "settings": {}
     },
