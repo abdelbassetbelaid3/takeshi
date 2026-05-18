@@ -64,9 +64,8 @@
   gap: 18px;
   transition: transform 1.2s cubic-bezier(.77,0,.175,1);
   will-change: transform;
-  padding-left: 2vw;
+  padding-left: 0;
 }
-
 #neo-slider-{{ section.id }} .neo-slider__slide{
   flex: 0 0 28%;
   overflow: hidden;
@@ -148,23 +147,44 @@
 
 }
 </style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
   const track = document.getElementById("track-{{ section.id }}");
-  const slides = document.querySelectorAll("#track-{{ section.id }} .neo-slider__slide");
+
+  let slides = Array.from(track.children);
 
   const prevBtn = document.getElementById("prev-{{ section.id }}");
   const nextBtn = document.getElementById("next-{{ section.id }}");
 
   const dotsContainer = document.getElementById("dots-{{ section.id }}");
 
-  let index = 0;
+  /* CLONE FIRST + LAST */
 
-  /* create dots */
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slides.length - 1].cloneNode(true);
 
-  slides.forEach((slide, i)=>{
+  track.appendChild(firstClone);
+  track.insertBefore(lastClone, slides[0]);
+
+  slides = Array.from(track.children);
+
+  let index = 1;
+
+  function slideWidth(){
+    return slides[0].offsetWidth + 18;
+  }
+
+  /* START POSITION */
+
+  track.style.transform =
+    `translateX(-${slideWidth() * index}px)`;
+
+  /* DOTS */
+
+  const realSlidesCount = slides.length - 2;
+
+  for(let i = 0; i < realSlidesCount; i++){
 
     const dot = document.createElement("div");
 
@@ -175,20 +195,20 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     dot.addEventListener("click", ()=>{
-      index = i;
+
+      index = i + 1;
+
       updateSlider();
+
       resetAuto();
+
     });
 
     dotsContainer.appendChild(dot);
 
-  });
+  }
 
   const dots = dotsContainer.querySelectorAll(".neo-slider__dot");
-
-  function slideWidth(){
-    return slides[0].offsetWidth + 18;
-  }
 
   function updateDots(){
 
@@ -196,16 +216,29 @@ document.addEventListener("DOMContentLoaded", function(){
       dot.classList.remove("active");
     });
 
-    if(dots[index]){
-      dots[index].classList.add("active");
+    let dotIndex = index - 1;
+
+    if(dotIndex >= realSlidesCount){
+      dotIndex = 0;
+    }
+
+    if(dotIndex < 0){
+      dotIndex = realSlidesCount - 1;
+    }
+
+    if(dots[dotIndex]){
+      dots[dotIndex].classList.add("active");
     }
 
   }
 
   function updateSlider(){
 
+    track.style.transition =
+      "transform 1.2s cubic-bezier(.77,0,.175,1)";
+
     track.style.transform =
-      `translateX(-${index * slideWidth()}px)`;
+      `translateX(-${slideWidth() * index}px)`;
 
     updateDots();
 
@@ -213,11 +246,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
   function nextSlide(){
 
-    index++;
+    if(index >= slides.length - 1) return;
 
-    if(index >= slides.length){
-      index = 0;
-    }
+    index++;
 
     updateSlider();
 
@@ -225,30 +256,68 @@ document.addEventListener("DOMContentLoaded", function(){
 
   function prevSlide(){
 
-    index--;
+    if(index <= 0) return;
 
-    if(index < 0){
-      index = slides.length - 1;
-    }
+    index--;
 
     updateSlider();
 
   }
 
+  /* seamless loop */
+
+  track.addEventListener("transitionend", ()=>{
+
+    /* reached fake last */
+
+    if(slides[index] === firstClone){
+
+      track.style.transition = "none";
+
+      index = 1;
+
+      track.style.transform =
+        `translateX(-${slideWidth() * index}px)`;
+
+    }
+
+    /* reached fake first */
+
+    if(slides[index] === lastClone){
+
+      track.style.transition = "none";
+
+      index = slides.length - 2;
+
+      track.style.transform =
+        `translateX(-${slideWidth() * index}px)`;
+
+    }
+
+  });
+
   nextBtn.addEventListener("click", ()=>{
+
     nextSlide();
+
     resetAuto();
+
   });
 
   prevBtn.addEventListener("click", ()=>{
+
     prevSlide();
+
     resetAuto();
+
   });
 
-  /* auto slide */
+  /* AUTO */
 
   let autoSlide = setInterval(()=>{
+
     nextSlide();
+
   }, 4000);
 
   function resetAuto(){
@@ -256,22 +325,28 @@ document.addEventListener("DOMContentLoaded", function(){
     clearInterval(autoSlide);
 
     autoSlide = setInterval(()=>{
+
       nextSlide();
+
     }, 4000);
 
   }
 
-  /* swipe */
+  /* SWIPE */
 
   let startX = 0;
   let endX = 0;
 
   track.addEventListener("touchstart", (e)=>{
+
     startX = e.touches[0].clientX;
+
   });
 
   track.addEventListener("touchmove", (e)=>{
+
     endX = e.touches[0].clientX;
+
   });
 
   track.addEventListener("touchend", ()=>{
@@ -279,12 +354,27 @@ document.addEventListener("DOMContentLoaded", function(){
     const diff = startX - endX;
 
     if(diff > 50){
+
       nextSlide();
+
     }
 
     if(diff < -50){
+
       prevSlide();
+
     }
+
+    resetAuto();
+
+  });
+
+  window.addEventListener("resize", ()=>{
+
+    track.style.transition = "none";
+
+    track.style.transform =
+      `translateX(-${slideWidth() * index}px)`;
 
   });
 
