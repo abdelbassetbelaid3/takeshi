@@ -1,25 +1,26 @@
-<div class="hero-slider" id="hero-slider-{{ section.id }}">
-  
-  <button class="hero-arrow hero-arrow--left" id="prev-{{ section.id }}">
+```liquid
+<div class="neo-hero-slider" id="neo-slider-{{ section.id }}">
+
+  <button class="neo-arrow neo-arrow--left" id="prev-{{ section.id }}">
     &#10094;
   </button>
 
-  <div class="hero-slider__viewport">
-    <div class="hero-slider__track" id="track-{{ section.id }}">
+  <div class="neo-slider__viewport">
+    <div class="neo-slider__track" id="track-{{ section.id }}">
 
       {% for block in section.blocks %}
-        <div class="hero-slide" {{ block.shopify_attributes }}>
+
+        <div class="neo-slide" {{ block.shopify_attributes }}>
 
           {% if block.settings.link != blank %}
-            <a href="{{ block.settings.link }}" class="hero-slide__link">
+            <a href="{{ block.settings.link }}">
           {% endif %}
 
           {% if block.settings.image != blank %}
             <img
               src="{{ block.settings.image | img_url: '1600x' }}"
               alt=""
-              class="hero-slide__image"
-              loading="lazy"
+              class="neo-slide__image"
             >
           {% else %}
             {{ 'image' | placeholder_svg_tag }}
@@ -30,19 +31,20 @@
           {% endif %}
 
         </div>
+
       {% endfor %}
 
     </div>
   </div>
 
-  <button class="hero-arrow hero-arrow--right" id="next-{{ section.id }}">
+  <button class="neo-arrow neo-arrow--right" id="next-{{ section.id }}">
     &#10095;
   </button>
 
 </div>
 
 <style>
-#hero-slider-{{ section.id }}{
+#neo-slider-{{ section.id }}{
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -50,30 +52,29 @@
 }
 
 /* viewport */
-#hero-slider-{{ section.id }} .hero-slider__viewport{
-  width: 100%;
+#neo-slider-{{ section.id }} .neo-slider__viewport{
   overflow: hidden;
+  width: 100%;
 }
 
 /* track */
-#hero-slider-{{ section.id }} .hero-slider__track{
+#neo-slider-{{ section.id }} .neo-slider__track{
   display: flex;
-  gap: 16px;
-  transition: transform .8s cubic-bezier(.77,0,.175,1);
+  gap: 18px;
+  transition: transform 1.2s cubic-bezier(.77,0,.175,1);
   will-change: transform;
-  padding: 0 3vw;
+  padding-left: 2vw;
 }
 
 /* slide */
-#hero-slider-{{ section.id }} .hero-slide{
+#neo-slider-{{ section.id }} .neo-slide{
+  flex: 0 0 28%;
   position: relative;
-  flex: 0 0 calc(33.333% - 11px);
   overflow: hidden;
-  border-radius: 0;
 }
 
 /* image */
-#hero-slider-{{ section.id }} .hero-slide__image{
+#neo-slider-{{ section.id }} .neo-slide__image{
   width: 100%;
   height: 100vh;
   object-fit: cover;
@@ -81,91 +82,90 @@
 }
 
 /* arrows */
-#hero-slider-{{ section.id }} .hero-arrow{
+#neo-slider-{{ section.id }} .neo-arrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 20;
+  z-index: 50;
 
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
 
   border: none;
   background: transparent;
-  color: #3b82f6;
 
   font-size: 42px;
-  line-height: 1;
-  cursor: pointer;
+  color: #3b82f6;
 
-  transition: .25s ease;
+  cursor: pointer;
+  transition: .3s ease;
 }
 
-#hero-slider-{{ section.id }} .hero-arrow:hover{
+#neo-slider-{{ section.id }} .neo-arrow:hover{
   opacity: .7;
 }
 
-#hero-slider-{{ section.id }} .hero-arrow--left{
-  left: 12px;
+#neo-slider-{{ section.id }} .neo-arrow--left{
+  left: 5px;
 }
 
-#hero-slider-{{ section.id }} .hero-arrow--right{
-  right: 12px;
+#neo-slider-{{ section.id }} .neo-arrow--right{
+  right: 5px;
 }
 
 /* mobile */
-@media screen and (max-width: 768px){
+@media(max-width: 768px){
 
-  #hero-slider-{{ section.id }} .hero-slider__track{
+  #neo-slider-{{ section.id }} .neo-slider__track{
     gap: 10px;
-    padding: 0 12px;
+    padding-left: 12px;
   }
 
-  #hero-slider-{{ section.id }} .hero-slide{
-    flex: 0 0 88%;
+  #neo-slider-{{ section.id }} .neo-slide{
+    flex: 0 0 82%;
   }
 
-  #hero-slider-{{ section.id }} .hero-slide__image{
+  #neo-slider-{{ section.id }} .neo-slide__image{
     height: 75vh;
   }
 
-  #hero-slider-{{ section.id }} .hero-arrow{
-    font-size: 30px;
-  }
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener("DOMContentLoaded", function(){
 
-  const slider = document.getElementById('hero-slider-{{ section.id }}');
-  const track = document.getElementById('track-{{ section.id }}');
+  const track = document.getElementById("track-{{ section.id }}");
+  const slides = track.querySelectorAll(".neo-slide");
 
-  const slides = track.querySelectorAll('.hero-slide');
-
-  const prevBtn = document.getElementById('prev-{{ section.id }}');
-  const nextBtn = document.getElementById('next-{{ section.id }}');
+  const nextBtn = document.getElementById("next-{{ section.id }}");
+  const prevBtn = document.getElementById("prev-{{ section.id }}");
 
   let index = 0;
 
-  function visibleSlides(){
-    return window.innerWidth <= 768 ? 1 : 3;
-  }
+  /* IMPORTANT
+     28% width + gap = shows:
+     3 full slides + small part of 4th
+  */
 
-  function slideWidth(){
-    return slides[0].offsetWidth + 16;
+  function getSlideWidth(){
+    const slide = slides[0];
+    const gap = 18;
+    return slide.offsetWidth + gap;
   }
 
   function maxIndex(){
-    return slides.length - visibleSlides();
+    return slides.length - 1;
   }
 
   function updateSlider(){
     track.style.transform =
-      `translateX(-${index * slideWidth()}px)`;
+      `translateX(-${index * getSlideWidth()}px)`;
   }
 
+  /* infinite loop */
   function nextSlide(){
+
     index++;
 
     if(index > maxIndex()){
@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function prevSlide(){
+
     index--;
 
     if(index < 0){
@@ -185,39 +186,45 @@ document.addEventListener('DOMContentLoaded', function(){
     updateSlider();
   }
 
-  nextBtn.addEventListener('click', () => {
+  nextBtn.addEventListener("click", ()=>{
     nextSlide();
     resetAuto();
   });
 
-  prevBtn.addEventListener('click', () => {
+  prevBtn.addEventListener("click", ()=>{
     prevSlide();
     resetAuto();
   });
 
-  /* auto slide */
-  let autoSlide = setInterval(nextSlide, 5000);
+  /* auto smooth slide */
+  let autoSlide = setInterval(()=>{
+    nextSlide();
+  }, 4000);
 
   function resetAuto(){
     clearInterval(autoSlide);
-    autoSlide = setInterval(nextSlide, 5000);
+
+    autoSlide = setInterval(()=>{
+      nextSlide();
+    }, 4000);
   }
 
-  /* swipe */
+  /* swipe support */
+
   let startX = 0;
   let endX = 0;
 
-  slider.addEventListener('touchstart', (e)=>{
+  track.addEventListener("touchstart", (e)=>{
     startX = e.touches[0].clientX;
   });
 
-  slider.addEventListener('touchmove', (e)=>{
+  track.addEventListener("touchmove", (e)=>{
     endX = e.touches[0].clientX;
   });
 
-  slider.addEventListener('touchend', ()=>{
+  track.addEventListener("touchend", ()=>{
 
-    let diff = startX - endX;
+    const diff = startX - endX;
 
     if(diff > 50){
       nextSlide();
@@ -230,14 +237,17 @@ document.addEventListener('DOMContentLoaded', function(){
     resetAuto();
   });
 
-  window.addEventListener('resize', updateSlider);
+  /* resize */
+  window.addEventListener("resize", ()=>{
+    updateSlider();
+  });
 
 });
 </script>
 
 {% schema %}
 {
-  "name": "Anime Hero Slider",
+  "name": "Neo Hero Slider",
   "settings": [],
   "blocks": [
     {
@@ -247,20 +257,21 @@ document.addEventListener('DOMContentLoaded', function(){
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Slide image"
+          "label": "Image"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Slide link"
+          "label": "Link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Anime Hero Slider"
+      "name": "Neo Hero Slider"
     }
   ]
 }
 {% endschema %}
+```
