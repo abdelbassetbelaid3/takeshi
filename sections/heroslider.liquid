@@ -1,49 +1,51 @@
 <div class="neo-slider" id="neo-slider-{{ section.id }}">
 
-  <button class="neo-slider__arrow neo-slider__arrow--left" id="prev-{{ section.id }}">
+  <button class="neo-slider__arrow neo-slider__arrow--left">
     &#10094;
   </button>
 
   <div class="neo-slider__viewport">
 
-    <div class="neo-slider__track" id="track-{{ section.id }}">
+    <div class="neo-slider__track">
 
-      {% for block in section.blocks %}
+      {% assign loop_count = 12 %}
 
-        <div class="neo-slider__slide" {{ block.shopify_attributes }}>
+      {% for i in (1..loop_count) %}
+        {% for block in section.blocks %}
 
-          {% if block.settings.link != blank %}
-            <a href="{{ block.settings.link }}">
-          {% endif %}
+          <div class="neo-slider__slide" {{ block.shopify_attributes }}>
 
-          {% if block.settings.image != blank %}
-            <img
-              src="{{ block.settings.image | image_url: width: 2000 }}"
-              alt=""
-              class="neo-slider__image"
-              loading="lazy"
-            >
-          {% else %}
-            {{ 'image' | placeholder_svg_tag }}
-          {% endif %}
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}">
+            {% endif %}
 
-          {% if block.settings.link != blank %}
-            </a>
-          {% endif %}
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 2000 }}"
+                alt=""
+                class="neo-slider__image"
+                loading="lazy"
+              >
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
 
-        </div>
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
 
+          </div>
+
+        {% endfor %}
       {% endfor %}
 
     </div>
 
   </div>
 
-  <button class="neo-slider__arrow neo-slider__arrow--right" id="next-{{ section.id }}">
+  <button class="neo-slider__arrow neo-slider__arrow--right">
     &#10095;
   </button>
-
-  <div class="neo-slider__dots" id="dots-{{ section.id }}"></div>
 
 </div>
 
@@ -58,23 +60,22 @@
 /* viewport */
 
 #neo-slider-{{ section.id }} .neo-slider__viewport{
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
 }
 
 /* track */
 
 #neo-slider-{{ section.id }} .neo-slider__track{
   display: flex;
+  gap: 18px;
   will-change: transform;
-  transition: transform 1.1s cubic-bezier(.77,0,.175,1);
 }
 
-/* slide */
+/* slides */
 
 #neo-slider-{{ section.id }} .neo-slider__slide{
   flex: 0 0 28%;
-  margin-right: 18px;
   overflow: hidden;
   position: relative;
 }
@@ -94,7 +95,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 20;
+  z-index: 30;
 
   width: 54px;
   height: 54px;
@@ -102,8 +103,8 @@
   border: none;
   background: transparent;
 
-  font-size: 44px;
   color: #3b82f6;
+  font-size: 44px;
 
   cursor: pointer;
 
@@ -122,39 +123,16 @@
   right: 5px;
 }
 
-/* dots */
-
-#neo-slider-{{ section.id }} .neo-slider__dots{
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 20;
-}
-
-#neo-slider-{{ section.id }} .neo-slider__dot{
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.45);
-  cursor: pointer;
-  transition: .3s ease;
-}
-
-#neo-slider-{{ section.id }} .neo-slider__dot.active{
-  background: #fff;
-  transform: scale(1.2);
-}
-
 /* mobile */
 
 @media(max-width:768px){
 
+  #neo-slider-{{ section.id }} .neo-slider__track{
+    gap: 10px;
+  }
+
   #neo-slider-{{ section.id }} .neo-slider__slide{
     flex: 0 0 82%;
-    margin-right: 10px;
   }
 
   #neo-slider-{{ section.id }} .neo-slider__image{
@@ -167,152 +145,112 @@
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-  const track = document.getElementById("track-{{ section.id }}");
+  const slider = document.querySelector("#neo-slider-{{ section.id }}");
 
-  const prevBtn = document.getElementById("prev-{{ section.id }}");
-  const nextBtn = document.getElementById("next-{{ section.id }}");
+  const track = slider.querySelector(".neo-slider__track");
 
-  const dotsContainer = document.getElementById("dots-{{ section.id }}");
+  const slides = slider.querySelectorAll(".neo-slider__slide");
 
-  let slides = Array.from(track.children);
+  const nextBtn = slider.querySelector(".neo-slider__arrow--right");
 
-  /* clones */
+  const prevBtn = slider.querySelector(".neo-slider__arrow--left");
 
-  const firstClone = slides[0].cloneNode(true);
-  const lastClone = slides[slides.length - 1].cloneNode(true);
+  const originalSlides = {{ section.blocks.size }};
 
-  track.appendChild(firstClone);
-  track.insertBefore(lastClone, slides[0]);
+  const repeatCount = 12;
 
-  slides = Array.from(track.children);
+  /*
+  START IN MIDDLE
+  prevents white gaps forever
+  */
 
-  let index = 1;
+  let index = originalSlides * Math.floor(repeatCount / 2);
 
-  function slideWidth(){
+  let isAnimating = false;
 
-    const style = window.getComputedStyle(slides[0]);
+  function getSlideWidth(){
 
-    const marginRight = parseFloat(style.marginRight) || 0;
+    const slide = slides[0];
 
-    return slides[0].getBoundingClientRect().width + marginRight;
+    const styles = window.getComputedStyle(track);
+
+    const gap = parseFloat(styles.columnGap || styles.gap || 0);
+
+    return slide.getBoundingClientRect().width + gap;
 
   }
 
-  /* start position */
+  function updateSlider(animated = true){
 
-  function setPosition(noAnimation = false){
+    if(animated){
 
-    if(noAnimation){
-      track.style.transition = "none";
-    }else{
       track.style.transition =
         "transform 1.1s cubic-bezier(.77,0,.175,1)";
+
+    }else{
+
+      track.style.transition = "none";
+
     }
 
     track.style.transform =
-      `translateX(-${slideWidth() * index}px)`;
+      `translateX(-${index * getSlideWidth()}px)`;
 
   }
 
-  setPosition(true);
-
-  /* dots */
-
-  const realSlidesCount = slides.length - 2;
-
-  for(let i = 0; i < realSlidesCount; i++){
-
-    const dot = document.createElement("div");
-
-    dot.classList.add("neo-slider__dot");
-
-    if(i === 0){
-      dot.classList.add("active");
-    }
-
-    dot.addEventListener("click", ()=>{
-
-      index = i + 1;
-
-      updateSlider();
-
-      resetAuto();
-
-    });
-
-    dotsContainer.appendChild(dot);
-
-  }
-
-  const dots = dotsContainer.querySelectorAll(".neo-slider__dot");
-
-  function updateDots(){
-
-    dots.forEach(dot=>{
-      dot.classList.remove("active");
-    });
-
-    let dotIndex = index - 1;
-
-    if(dotIndex >= realSlidesCount){
-      dotIndex = 0;
-    }
-
-    if(dotIndex < 0){
-      dotIndex = realSlidesCount - 1;
-    }
-
-    if(dots[dotIndex]){
-      dots[dotIndex].classList.add("active");
-    }
-
-  }
-
-  function updateSlider(){
-
-    setPosition();
-
-    updateDots();
-
-  }
+  updateSlider(false);
 
   function nextSlide(){
 
-    if(index >= slides.length - 1) return;
+    if(isAnimating) return;
+
+    isAnimating = true;
 
     index++;
 
-    updateSlider();
+    updateSlider(true);
 
   }
 
   function prevSlide(){
 
-    if(index <= 0) return;
+    if(isAnimating) return;
+
+    isAnimating = true;
 
     index--;
 
-    updateSlider();
+    updateSlider(true);
 
   }
 
-  /* seamless infinite */
-
   track.addEventListener("transitionend", ()=>{
 
-    if(slides[index] === firstClone){
+    isAnimating = false;
 
-      index = 1;
+    /*
+    BEFORE REACHING END
+    jump back silently to center
+    */
 
-      setPosition(true);
+    if(index >= originalSlides * (repeatCount - 3)){
+
+      index = originalSlides * Math.floor(repeatCount / 2);
+
+      updateSlider(false);
 
     }
 
-    if(slides[index] === lastClone){
+    /*
+    BEFORE REACHING START
+    jump forward silently to center
+    */
 
-      index = slides.length - 2;
+    if(index <= originalSlides){
 
-      setPosition(true);
+      index = originalSlides * Math.floor(repeatCount / 2);
+
+      updateSlider(false);
 
     }
 
@@ -359,21 +297,22 @@ document.addEventListener("DOMContentLoaded", function(){
   /* swipe */
 
   let startX = 0;
+
   let endX = 0;
 
-  track.addEventListener("touchstart", (e)=>{
+  slider.addEventListener("touchstart", (e)=>{
 
     startX = e.touches[0].clientX;
 
   });
 
-  track.addEventListener("touchmove", (e)=>{
+  slider.addEventListener("touchmove", (e)=>{
 
     endX = e.touches[0].clientX;
 
   });
 
-  track.addEventListener("touchend", ()=>{
+  slider.addEventListener("touchend", ()=>{
 
     const diff = startX - endX;
 
@@ -397,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   window.addEventListener("resize", ()=>{
 
-    setPosition(true);
+    updateSlider(false);
 
   });
 
@@ -406,8 +345,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
 {% schema %}
 {
-  "name": "Neo Hero Slider",
+  "name": "Premium Portrait Carousel",
   "settings": [],
+  "max_blocks": 20,
   "blocks": [
     {
       "type": "slide",
@@ -428,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function(){
   ],
   "presets": [
     {
-      "name": "Neo Hero Slider"
+      "name": "Premium Portrait Carousel"
     }
   ]
 }
