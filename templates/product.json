@@ -12,6 +12,12 @@
     "main": {
       "type": "product",
       "blocks": {
+        "product_media_FGcx3h": {
+          "type": "product-media",
+          "name": "Product media",
+          "settings": {},
+          "blocks": {}
+        },
         "product_media_menU4W": {
           "type": "product-media",
           "name": "Product page",
@@ -20,6 +26,7 @@
         }
       },
       "block_order": [
+        "product_media_FGcx3h",
         "product_media_menU4W"
       ],
       "settings": {}
