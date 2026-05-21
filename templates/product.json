@@ -19,7 +19,6 @@
         },
         "product_price_FGQPYq": {
           "type": "product-price",
-          "disabled": true,
           "settings": {
             "show_compare_price": true
           },
