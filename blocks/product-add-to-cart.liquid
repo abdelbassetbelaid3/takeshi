@@ -1,0 +1,63 @@
+{% form 'product', product, class: 'product-form' %}
+
+  <input
+    type="hidden"
+    name="id"
+    value="{{ product.selected_or_first_available_variant.id }}"
+  >
+
+  <button
+    type="submit"
+    class="product-add-to-cart"
+    {% unless product.available %}
+      disabled
+    {% endunless %}
+  >
+    {% if product.available %}
+      Add to cart
+    {% else %}
+      Sold out
+    {% endif %}
+  </button>
+
+{% endform %}
+
+{% stylesheet %}
+
+.product-form {
+  width: 100%;
+}
+
+.product-add-to-cart {
+  width: 100%;
+  border: none;
+  background: #000;
+  color: #fff;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+
+.product-add-to-cart:hover {
+  opacity: .85;
+}
+
+.product-add-to-cart:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Add to cart",
+  "presets": [
+    {
+      "name": "Add to cart"
+    }
+  ]
+}
+{% endschema %}
