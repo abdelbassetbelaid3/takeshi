@@ -14,23 +14,21 @@
       "blocks": {
         "product_media_CftJNj": {
           "type": "product-media",
-          "settings": {}
+          "settings": {},
+          "blocks": {}
         },
         "product_price_FGQPYq": {
           "type": "product-price",
+          "disabled": true,
           "settings": {
-            "alignment": "left"
-          }
-        },
-        "product_details_jy4TFT": {
-          "type": "product-details",
-          "settings": {}
+            "show_compare_price": true
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "product_media_CftJNj",
-        "product_price_FGQPYq",
-        "product_details_jy4TFT"
+        "product_price_FGQPYq"
       ],
       "settings": {}
     },
