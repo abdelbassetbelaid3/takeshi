@@ -1,49 +1,42 @@
-{% unless product.has_only_default_variant %}
-
 <div class="variant-picker" {{ block.shopify_attributes }}>
 
-  {% for option in product.options_with_values %}
+  {% unless product.has_only_default_variant %}
 
-    <div class="variant-picker__group">
+    {% for option in product.options_with_values %}
 
-      <label class="variant-picker__label">
-        {{ option.name }}
-      </label>
+      <div class="variant-picker__group">
 
-      <select
-        class="variant-picker__select"
-        data-option-position="{{ option.position }}"
-      >
+        <label class="variant-picker__label">
+          {{ option.name }}
+        </label>
 
-        {% for value in option.values %}
+        <select
+          class="variant-picker__select"
+          data-option-position="{{ option.position }}"
+        >
 
-          <option
-            value="{{ value }}"
-            {% if option.selected_value == value %}
-              selected
-            {% endif %}
-          >
-            {{ value }}
-          </option>
+          {% for value in option.values %}
 
-        {% endfor %}
+            <option
+              value="{{ value }}"
+              {% if option.selected_value == value %}
+                selected
+              {% endif %}
+            >
+              {{ value }}
+            </option>
 
-      </select>
+          {% endfor %}
 
-    </div>
+        </select>
 
-  {% endfor %}
+      </div>
 
-  <input
-    type="hidden"
-    name="id"
-    value="{{ product.selected_or_first_available_variant.id }}"
-    data-variant-id
-  >
+    {% endfor %}
+
+  {% endunless %}
 
 </div>
-
-{% endunless %}
 
 {% stylesheet %}
 
@@ -71,56 +64,14 @@
   border: 1px solid #ddd;
   background: #fff;
   font-size: 14px;
+  outline: none;
   cursor: pointer;
 }
 
 {% endstylesheet %}
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  const pickers = document.querySelectorAll('.variant-picker');
-
-  pickers.forEach((picker) => {
-
-    const selects = picker.querySelectorAll('select');
-
-    const variantInput = picker.querySelector('[data-variant-id]');
-
-    const variants = {{ product.variants | json }};
-
-    function updateVariant() {
-
-      const selectedOptions = Array.from(selects).map(
-        (select) => select.value
-      );
-
-      const matchedVariant = variants.find((variant) => {
-
-        return variant.options.every((option, index) => {
-          return option === selectedOptions[index];
-        });
-
-      });
-
-      if (matchedVariant) {
-        variantInput.value = matchedVariant.id;
-      }
-
-    }
-
-    selects.forEach((select) => {
-      select.addEventListener('change', updateVariant);
-    });
-
-  });
-
-});
-</script>
-
 {% schema %}
 {
-  "name": "Variant picker",
-  "settings": []
+  "name": "Variant picker"
 }
 {% endschema %}
