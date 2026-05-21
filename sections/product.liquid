@@ -1,15 +1,61 @@
 <div class="product-page">
 
-  {% content_for 'blocks' %}
+  {% for block in section.blocks %}
+
+    {% case block.type %}
+
+      {% when 'product_title' %}
+        <div class="product-title-block" {{ block.shopify_attributes }}>
+          <h1 class="product-title">
+            {{ product.title }}
+          </h1>
+        </div>
+
+      {% when 'product_price' %}
+        <div class="product-price-block" {{ block.shopify_attributes }}>
+          {{ product.price | money }}
+        </div>
+
+    {% endcase %}
+
+  {% endfor %}
 
 </div>
+
+<style>
+.product-page {
+  padding: 40px 20px;
+}
+
+.product-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 15px;
+}
+
+.product-price-block {
+  font-size: 24px;
+  font-weight: 600;
+}
+</style>
 
 {% schema %}
 {
   "name": "Product page",
+  "settings": [],
   "blocks": [
     {
-      "type": "@theme"
+      "type": "product_title",
+      "name": "Product Title"
+    },
+    {
+      "type": "product_price",
+      "name": "Product Price"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product page"
     }
   ]
 }
