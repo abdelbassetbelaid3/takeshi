@@ -12,22 +12,18 @@
     "main": {
       "type": "product",
       "blocks": {
-        "product_media_CftJNj": {
-          "type": "product-media",
-          "settings": {},
-          "blocks": {}
+        "product_title_rKiX7n": {
+          "type": "product_title",
+          "settings": {}
         },
-        "product_price_FGQPYq": {
-          "type": "product-price",
-          "settings": {
-            "show_compare_price": true
-          },
-          "blocks": {}
+        "product_price_VjiYib": {
+          "type": "product_price",
+          "settings": {}
         }
       },
       "block_order": [
-        "product_media_CftJNj",
-        "product_price_FGQPYq"
+        "product_title_rKiX7n",
+        "product_price_VjiYib"
       ],
       "settings": {}
     },
