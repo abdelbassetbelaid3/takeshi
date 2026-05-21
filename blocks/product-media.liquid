@@ -260,10 +260,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-
 {% schema %}
 {
-  "name": "Product media",
-  "settings": []
+  "name": "Product page",
+  "blocks": [
+    {
+      "type": "product-media"
+    },
+
+  ],
+  "presets": [
+    {
+      "name": "Product page"
+    }
+  ]
 }
 {% endschema %}
