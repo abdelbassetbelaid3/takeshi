@@ -24,6 +24,12 @@
           "settings": {},
           "blocks": {}
         },
+        "product_variant_picker_4nedUV": {
+          "type": "product-variant-picker",
+          "name": "Variant picker",
+          "settings": {},
+          "blocks": {}
+        },
         "product_description_3YPtXh": {
           "type": "product-description",
           "name": "Product description",
@@ -46,6 +52,7 @@
       "block_order": [
         "product_media_FGcx3h",
         "product_title_aRcWFR",
+        "product_variant_picker_4nedUV",
         "product_description_3YPtXh",
         "product_variant_picker_Wty4wt",
         "product_add_to_cart_iQr9Br"
