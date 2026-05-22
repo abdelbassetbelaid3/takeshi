@@ -27,6 +27,7 @@
         "product_variant_picker_4nedUV": {
           "type": "product-variant-picker",
           "name": "Variant picker",
+          "disabled": true,
           "settings": {},
           "blocks": {}
         },
