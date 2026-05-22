@@ -1,20 +1,143 @@
 <div class="variant-picker" {{ block.shopify_attributes }}>
 
-  <p>Options: {{ product.options.size }}</p>
-
   {% for option in product.options_with_values %}
 
-    <h4>{{ option.name }}</h4>
+    <div class="variant-group">
 
-    {% for value in option.values %}
-      <button type="button">
-        {{ value }}
-      </button>
-    {% endfor %}
+      <div class="variant-group__header">
+        <span class="variant-group__name">
+          {{ option.name }}
+        </span>
+
+        <span class="variant-group__selected">
+          {{ option.selected_value }}
+        </span>
+      </div>
+
+      <div class="variant-group__values">
+
+        {% for value in option.values %}
+
+          <label class="variant-value">
+
+            <input
+              type="radio"
+              name="option-{{ option.position }}"
+              value="{{ value }}"
+              {% if value == option.selected_value %}
+                checked
+              {% endif %}
+            >
+
+            <span>{{ value }}</span>
+
+          </label>
+
+        {% endfor %}
+
+      </div>
+
+    </div>
 
   {% endfor %}
 
 </div>
+
+{% stylesheet %}
+
+.variant-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.variant-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.variant-group__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.variant-group__name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.variant-group__selected {
+  font-size: 13px;
+  color: #777;
+}
+
+.variant-group__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.variant-value {
+  cursor: pointer;
+}
+
+.variant-value input {
+  display: none;
+}
+
+.variant-value span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 56px;
+  height: 48px;
+
+  padding: 0 18px;
+
+  border: 1px solid #dcdcdc;
+  background: #fff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.variant-value:hover span {
+  border-color: #111;
+  transform: translateY(-1px);
+}
+
+.variant-value input:checked + span {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+@media screen and (max-width: 768px) {
+
+  .variant-group__values {
+    gap: 8px;
+  }
+
+  .variant-value span {
+    min-width: 50px;
+    height: 44px;
+    padding: 0 14px;
+  }
+
+}
+
+{% endstylesheet %}
 
 {% schema %}
 {
