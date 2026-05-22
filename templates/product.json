@@ -18,16 +18,16 @@
           "settings": {},
           "blocks": {}
         },
-        "product_media_menU4W": {
-          "type": "product-media",
-          "name": "Product page",
+        "product_add_to_cart_iQr9Br": {
+          "type": "product-add-to-cart",
+          "name": "Add to cart",
           "settings": {},
           "blocks": {}
         }
       },
       "block_order": [
         "product_media_FGcx3h",
-        "product_media_menU4W"
+        "product_add_to_cart_iQr9Br"
       ],
       "settings": {}
     },
