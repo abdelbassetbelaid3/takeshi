@@ -1,10 +1,19 @@
-<div {{ block.shopify_attributes }}>
-  <p>Product: {{ product.title }}</p>
-  <p>Variants: {{ product.variants.size }}</p>
+<div class="variant-picker" {{ block.shopify_attributes }}>
 
-  {% for variant in product.variants %}
-    <p>{{ variant.title }} - {{ variant.id }}</p>
+  <p>Options: {{ product.options.size }}</p>
+
+  {% for option in product.options_with_values %}
+
+    <h4>{{ option.name }}</h4>
+
+    {% for value in option.values %}
+      <button type="button">
+        {{ value }}
+      </button>
+    {% endfor %}
+
   {% endfor %}
+
 </div>
 
 {% schema %}
