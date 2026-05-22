@@ -1,0 +1,134 @@
+{% unless product.has_only_default_variant %}
+
+  <div class="product-variants" {{ block.shopify_attributes }}>
+
+    {% for option in product.options_with_values %}
+
+      <div class="product-option">
+
+        <label class="product-option__label">
+          {{ option.name }}
+        </label>
+
+        <select
+          class="product-option__select"
+          data-option-position="{{ option.position }}"
+        >
+          {% for value in option.values %}
+            <option
+              value="{{ value }}"
+              {% if option.selected_value == value %}
+                selected
+              {% endif %}
+            >
+              {{ value }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+  <script type="application/json" data-product-variants>
+    {{ product.variants | json }}
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const root = document.currentScript.closest('.shopify-block');
+
+      if (!root) return;
+
+      const selectors = root.querySelectorAll('.product-option__select');
+
+      const variants = JSON.parse(
+        document.querySelector('[data-product-variants]').textContent
+      );
+
+      function updateVariant() {
+
+        const selectedOptions = Array.from(selectors).map(
+          select => select.value
+        );
+
+        const matchedVariant = variants.find(variant => {
+
+          return variant.options.every((option, index) => {
+            return option === selectedOptions[index];
+          });
+
+        });
+
+        if (!matchedVariant) return;
+
+        const url = new URL(window.location);
+
+        url.searchParams.set('variant', matchedVariant.id);
+
+        window.history.replaceState({}, '', url);
+
+        const idInput = document.querySelector(
+          'input[name="id"]'
+        );
+
+        if (idInput) {
+          idInput.value = matchedVariant.id;
+        }
+
+      }
+
+      selectors.forEach(select => {
+        select.addEventListener('change', updateVariant);
+      });
+
+    });
+  </script>
+
+{% endunless %}
+
+{% stylesheet %}
+
+.product-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.product-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-option__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+}
+
+.product-option__select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #ddd;
+  padding: 0 14px;
+  font-size: 15px;
+  background: #fff;
+  cursor: pointer;
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Variant picker",
+  "presets": [
+    {
+      "name": "Variant picker"
+    }
+  ]
+}
+{% endschema %}

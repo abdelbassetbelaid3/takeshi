@@ -1,0 +1,32 @@
+<h1 class="product-title" {{ block.shopify_attributes }}>
+  {{ product.title }}
+</h1>
+
+{% stylesheet %}
+
+.product-title {
+  margin: 0;
+  font-size: 42px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #111;
+}
+
+@media screen and (max-width: 768px) {
+  .product-title {
+    font-size: 30px;
+  }
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product title",
+  "presets": [
+    {
+      "name": "Product title"
+    }
+  ]
+}
+{% endschema %}

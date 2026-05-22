@@ -1,0 +1,38 @@
+<div class="product-description rte" {{ block.shopify_attributes }}>
+  {{ product.description }}
+</div>
+
+{% stylesheet %}
+
+.product-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #444;
+}
+
+.product-description p {
+  margin: 0 0 16px;
+}
+
+.product-description img {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-description ul,
+.product-description ol {
+  padding-left: 20px;
+}
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product description",
+  "presets": [
+    {
+      "name": "Product description"
+    }
+  ]
+}
+{% endschema %}
