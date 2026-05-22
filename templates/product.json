@@ -18,6 +18,18 @@
           "settings": {},
           "blocks": {}
         },
+        "product_title_aRcWFR": {
+          "type": "product-title",
+          "name": "Product title",
+          "settings": {},
+          "blocks": {}
+        },
+        "product_description_3YPtXh": {
+          "type": "product-description",
+          "name": "Product description",
+          "settings": {},
+          "blocks": {}
+        },
         "product_variant_picker_Wty4wt": {
           "type": "product-variant-picker",
           "name": "Variant picker",
@@ -33,6 +45,8 @@
       },
       "block_order": [
         "product_media_FGcx3h",
+        "product_title_aRcWFR",
+        "product_description_3YPtXh",
         "product_variant_picker_Wty4wt",
         "product_add_to_cart_iQr9Br"
       ],
