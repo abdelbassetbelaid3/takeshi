@@ -88,13 +88,13 @@
   will-change: transform;
 }
 
-/* SLIDES */
+/* SLIDE */
 
 #neo-slider-{{ section.id }} .neo-slider__slide{
   position: relative;
   overflow: hidden;
 
-  /* VERTICAL PORTRAIT */
+  /* TRUE VERTICAL PORTRAIT */
   flex: 0 0 18%;
 
   aspect-ratio: 2 / 3;
@@ -125,7 +125,7 @@
   transition: transform .7s ease;
 }
 
-/* HOVER EFFECT */
+/* HOVER */
 
 #neo-slider-{{ section.id }} .neo-slider__slide:hover .neo-slider__image{
   transform: scale(1.06);
@@ -137,7 +137,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 50;
+  z-index: 30;
 
   width: 54px;
   height: 54px;
@@ -148,13 +148,13 @@
   background: rgba(255,255,255,.85);
 
   color: #111;
-  font-size: 24px;
+  font-size: 26px;
 
   cursor: pointer;
 
-  backdrop-filter: blur(8px);
-
   transition: .3s ease;
+
+  backdrop-filter: blur(5px);
 }
 
 #neo-slider-{{ section.id }} .neo-slider__arrow:hover{
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function(){
     isAnimating = false;
 
     /*
-    LOOP END
+    RESET END
     */
 
     if(index >= originalSlides * (repeatCount - 3)){
@@ -323,7 +323,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     /*
-    LOOP START
+    RESET START
     */
 
     if(index <= originalSlides){
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   });
 
-  /* ARROWS */
+  /* NEXT */
 
   nextBtn.addEventListener("click", ()=>{
 
@@ -346,6 +346,8 @@ document.addEventListener("DOMContentLoaded", function(){
     resetAuto();
 
   });
+
+  /* PREV */
 
   prevBtn.addEventListener("click", ()=>{
 
@@ -375,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   }
 
-  /* SWIPE */
+  /* TOUCH */
 
   let startX = 0;
   let endX = 0;
@@ -425,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 {% schema %}
 {
-  "name": "Vertical Portrait Carousel",
+  "name": "Premium Portrait Carousel",
   "settings": [],
   "max_blocks": 20,
   "blocks": [
@@ -448,7 +450,7 @@ document.addEventListener("DOMContentLoaded", function(){
   ],
   "presets": [
     {
-      "name": "Vertical Portrait Carousel"
+      "name": "Premium Portrait Carousel"
     }
   ]
 }
