@@ -5,18 +5,21 @@
     <button class="rp-arrow rp-left" type="button">‹</button>
 
     <div class="rp-slider">
+
       {% if recommendations.products_count > 0 %}
 
         {% for rec_product in recommendations.products %}
-          
+
           <div class="rp-card">
+
             <a class="rp-image" href="{{ rec_product.url }}">
 
               {% if rec_product.featured_image %}
-                <img 
+                <img
                   class="rp-main"
-                  src="{{ rec_product.featured_image | image_url: width: 400 }}"
+                  src="{{ rec_product.featured_image | image_url: width: 600 }}"
                   alt="{{ rec_product.title }}"
+                  loading="lazy"
                 >
               {% else %}
                 <div class="rp-placeholder">
@@ -25,50 +28,88 @@
               {% endif %}
 
               {% if rec_product.images[1] %}
-                <img 
+                <img
                   class="rp-hover"
-                  src="{{ rec_product.images[1] | image_url: width: 400 }}"
+                  src="{{ rec_product.images[1] | image_url: width: 600 }}"
                   alt="{{ rec_product.title }}"
+                  loading="lazy"
                 >
               {% endif %}
 
             </a>
 
             <div class="rp-info">
-              <h3>{{ rec_product.title }}</h3>
-              <span class="rp-price">{{ rec_product.price | money }}</span>
-              <button class="rp-btn">Add to cart</button>
+              <h3 class="rp-product-title">
+                <a href="{{ rec_product.url }}">
+                  {{ rec_product.title }}
+                </a>
+              </h3>
+
+              <span class="rp-price">
+                {{ rec_product.price | money }}
+              </span>
+
+              <form method="post" action="/cart/add">
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ rec_product.selected_or_first_available_variant.id }}"
+                >
+
+                <button
+                  type="submit"
+                  class="rp-btn"
+                >
+                  Add to cart
+                </button>
+              </form>
             </div>
+
           </div>
 
         {% endfor %}
 
       {% else %}
 
-        <!-- 🔥 FALLBACK (IMPORTANT for new stores) -->
+        <!-- Fallback products -->
+
         {% for rec_product in collections.all.products limit: 8 %}
-          
+
           <div class="rp-card">
+
             <a class="rp-image" href="{{ rec_product.url }}">
 
               {% if rec_product.featured_image %}
-                <img 
+                <img
                   class="rp-main"
-                  src="{{ rec_product.featured_image | image_url: width: 400 }}"
+                  src="{{ rec_product.featured_image | image_url: width: 600 }}"
+                  alt="{{ rec_product.title }}"
+                  loading="lazy"
                 >
               {% endif %}
 
             </a>
 
             <div class="rp-info">
-              <h3>{{ rec_product.title }}</h3>
-              <span class="rp-price">{{ rec_product.price | money }}</span>
+
+              <h3 class="rp-product-title">
+                <a href="{{ rec_product.url }}">
+                  {{ rec_product.title }}
+                </a>
+              </h3>
+
+              <span class="rp-price">
+                {{ rec_product.price | money }}
+              </span>
+
             </div>
+
           </div>
 
         {% endfor %}
 
       {% endif %}
+
     </div>
 
     <button class="rp-arrow rp-right" type="button">›</button>
@@ -76,128 +117,220 @@
 </div>
 
 {% stylesheet %}
-.rp-section{ padding:60px 20px; }
+
+.rp-section{
+  padding: 70px 20px;
+}
 
 .rp-title{
-  text-align:center;
-  font-size:28px;
-  margin-bottom:30px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  letter-spacing: -0.5px;
 }
 
 .rp-wrapper{
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
 }
 
 .rp-slider{
-  display:flex;
-  gap:18px;
-  overflow:hidden;
-  scroll-behavior:smooth;
-  width:100%;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.rp-slider::-webkit-scrollbar{
+  display: none;
 }
 
 .rp-card{
-  flex:0 0 calc(100% / 6 - 15px);
+  flex: 0 0 calc(100% / 5 - 16px);
 }
 
-/* responsive */
-@media(max-width:1200px){
-  .rp-card{ flex:0 0 calc(100% / 4 - 15px); }
+@media(max-width: 1200px){
+  .rp-card{
+    flex: 0 0 calc(100% / 4 - 15px);
+  }
 }
-@media(max-width:800px){
-  .rp-card{ flex:0 0 calc(100% / 3 - 15px); }
+
+@media(max-width: 900px){
+  .rp-card{
+    flex: 0 0 calc(100% / 3 - 14px);
+  }
 }
-@media(max-width:600px){
-  .rp-card{ flex:0 0 calc(100% / 2 - 15px); }
+
+@media(max-width: 600px){
+  .rp-card{
+    flex: 0 0 calc(100% / 2 - 10px);
+  }
 }
-@media(max-width:420px){
-  .rp-card{ flex:0 0 100%; }
+
+@media(max-width: 420px){
+  .rp-card{
+    flex: 0 0 100%;
+  }
 }
+
+/* IMAGE */
 
 .rp-image{
-  position:relative;
-  display:block;
-  overflow:hidden;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 5; /* portrait */
+  background: #f5f5f5;
 }
 
 .rp-image img{
-  width:100%;
-  height:240px;
-  object-fit:cover;
-  transition:0.4s;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all .45s ease;
 }
 
-.rp-main{ transform:scale(1); }
-
-.rp-image:hover .rp-main{
-  transform:scale(1.1);
-  opacity:0;
+.rp-main{
+  opacity: 1;
+  transform: scale(1);
 }
 
 .rp-hover{
-  position:absolute;
-  top:0;
-  left:0;
-  opacity:0;
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.rp-image:hover .rp-main{
+  opacity: 0;
+  transform: scale(1.08);
 }
 
 .rp-image:hover .rp-hover{
-  opacity:1;
-  transform:scale(1.1);
-}
-
-.rp-info{
-  text-align:center;
-  padding:10px 0;
-}
-
-.rp-price{
-  font-weight:bold;
-}
-
-.rp-btn{
-  background:#111;
-  color:#fff;
-  border:none;
-  padding:6px 10px;
-  cursor:pointer;
-}
-
-.rp-arrow{
-  font-size:26px;
-  width:38px;
-  height:38px;
-  cursor:pointer;
+  opacity: 1;
+  transform: scale(1.08);
 }
 
 .rp-placeholder{
-  height:240px;
-  background:#eee;
+  width: 100%;
+  height: 100%;
 }
+
+/* INFO */
+
+.rp-info{
+  padding-top: 14px;
+  text-align: center;
+}
+
+.rp-product-title{
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.rp-product-title a{
+  text-decoration: none;
+  color: #111;
+}
+
+.rp-price{
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.rp-btn{
+  width: 100%;
+  border: none;
+  background: #111;
+  color: #fff;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.rp-btn:hover{
+  background: #333;
+}
+
+/* ARROWS */
+
+.rp-arrow{
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: .3s;
+}
+
+.rp-arrow:hover{
+  background: #333;
+}
+
+@media(max-width: 600px){
+
+  .rp-arrow{
+    display: none;
+  }
+
+}
+
 {% endstylesheet %}
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
   const slider = document.querySelector(".rp-slider");
-  const left = document.querySelector(".rp-left");
-  const right = document.querySelector(".rp-right");
+  const leftBtn = document.querySelector(".rp-left");
+  const rightBtn = document.querySelector(".rp-right");
 
   if (!slider) return;
 
-  right.addEventListener("click", () => {
-    slider.scrollBy({ left: 300, behavior: "smooth" });
+  rightBtn.addEventListener("click", () => {
+
+    slider.scrollBy({
+      left: 350,
+      behavior: "smooth"
+    });
+
   });
 
-  left.addEventListener("click", () => {
-    slider.scrollBy({ left: -300, behavior: "smooth" });
+  leftBtn.addEventListener("click", () => {
+
+    slider.scrollBy({
+      left: -350,
+      behavior: "smooth"
+    });
+
   });
+
 });
 </script>
 
 {% schema %}
 {
   "name": "Related Products",
-  "settings": []
+  "settings": [],
+  "presets": [
+    {
+      "name": "Related Products"
+    }
+  ]
 }
 {% endschema %}
