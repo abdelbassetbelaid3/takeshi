@@ -18,23 +18,45 @@
           "settings": {},
           "blocks": {}
         },
-        "product_title_aRcWFR": {
-          "type": "product-title",
-          "name": "Product title",
-          "settings": {},
-          "blocks": {}
+        "group_exYYUT": {
+          "type": "group",
+          "name": "t:general.row",
+          "settings": {
+            "layout_direction": "group--horizontal",
+            "alignment": "flex-start",
+            "padding": 0
+          },
+          "blocks": {
+            "product_title_kDLLYM": {
+              "type": "product-title",
+              "name": "Product title",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_description_TqWpNF": {
+              "type": "product-description",
+              "name": "Product description",
+              "settings": {},
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_title_kDLLYM",
+            "product_description_TqWpNF"
+          ]
         },
         "product_variant_picker_4nedUV": {
           "type": "product-variant-picker",
           "name": "Variant picker",
+          "disabled": true,
           "settings": {},
           "blocks": {}
         },
-        "product_description_3YPtXh": {
-          "type": "product-description",
-          "name": "Product description",
-          "settings": {},
-          "blocks": {}
+        "webi_leadform_leadform_Q6iALw": {
+          "type": "shopify://apps/webi-leadform/blocks/leadform/3a127389-69cb-41d6-8e5c-10311613fcf7",
+          "settings": {
+            "leadformcodv3": "{{ closest.product }}"
+          }
         },
         "product_add_to_cart_iQr9Br": {
           "type": "product-add-to-cart",
@@ -45,9 +67,9 @@
       },
       "block_order": [
         "product_media_FGcx3h",
-        "product_title_aRcWFR",
+        "group_exYYUT",
         "product_variant_picker_4nedUV",
-        "product_description_3YPtXh",
+        "webi_leadform_leadform_Q6iALw",
         "product_add_to_cart_iQr9Br"
       ],
       "settings": {}
