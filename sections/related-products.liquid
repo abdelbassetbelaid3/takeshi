@@ -2,7 +2,10 @@
   <h2 class="rp-title">You may also like</h2>
 
   <div class="rp-wrapper">
-    <button class="rp-arrow rp-left" type="button">‹</button>
+
+    <button class="rp-arrow rp-left" type="button">
+      ‹
+    </button>
 
     <div class="rp-slider">
 
@@ -15,30 +18,39 @@
             <a class="rp-image" href="{{ rec_product.url }}">
 
               {% if rec_product.featured_image %}
+
+                <!-- MAIN IMAGE -->
                 <img
                   class="rp-main"
-                  src="{{ rec_product.featured_image | image_url: width: 600 }}"
+                  src="{{ rec_product.featured_image | image_url: width: 700 }}"
                   alt="{{ rec_product.title }}"
                   loading="lazy"
                 >
+
               {% else %}
+
                 <div class="rp-placeholder">
                   {{ 'product-1' | placeholder_svg_tag }}
                 </div>
+
               {% endif %}
 
-              {% if rec_product.images[1] %}
+              <!-- SECOND HOVER IMAGE -->
+              {% if rec_product.images.size > 1 %}
+
                 <img
                   class="rp-hover"
-                  src="{{ rec_product.images[1] | image_url: width: 600 }}"
+                  src="{{ rec_product.images[1] | image_url: width: 700 }}"
                   alt="{{ rec_product.title }}"
                   loading="lazy"
                 >
+
               {% endif %}
 
             </a>
 
             <div class="rp-info">
+
               <h3 class="rp-product-title">
                 <a href="{{ rec_product.url }}">
                   {{ rec_product.title }}
@@ -50,6 +62,7 @@
               </span>
 
               <form method="post" action="/cart/add">
+
                 <input
                   type="hidden"
                   name="id"
@@ -62,7 +75,9 @@
                 >
                   Add to cart
                 </button>
+
               </form>
+
             </div>
 
           </div>
@@ -71,7 +86,7 @@
 
       {% else %}
 
-        <!-- Fallback products -->
+        <!-- FALLBACK -->
 
         {% for rec_product in collections.all.products limit: 8 %}
 
@@ -80,12 +95,26 @@
             <a class="rp-image" href="{{ rec_product.url }}">
 
               {% if rec_product.featured_image %}
+
                 <img
                   class="rp-main"
-                  src="{{ rec_product.featured_image | image_url: width: 600 }}"
+                  src="{{ rec_product.featured_image | image_url: width: 700 }}"
                   alt="{{ rec_product.title }}"
                   loading="lazy"
                 >
+
+              {% endif %}
+
+              <!-- FALLBACK SECOND IMAGE -->
+              {% if rec_product.images.size > 1 %}
+
+                <img
+                  class="rp-hover"
+                  src="{{ rec_product.images[1] | image_url: width: 700 }}"
+                  alt="{{ rec_product.title }}"
+                  loading="lazy"
+                >
+
               {% endif %}
 
             </a>
@@ -112,7 +141,10 @@
 
     </div>
 
-    <button class="rp-arrow rp-right" type="button">›</button>
+    <button class="rp-arrow rp-right" type="button">
+      ›
+    </button>
+
   </div>
 </div>
 
@@ -127,14 +159,12 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 40px;
-  letter-spacing: -0.5px;
 }
 
 .rp-wrapper{
   display: flex;
   align-items: center;
   gap: 12px;
-  position: relative;
 }
 
 .rp-slider{
@@ -154,25 +184,25 @@
   flex: 0 0 calc(100% / 5 - 16px);
 }
 
-@media(max-width: 1200px){
+@media(max-width:1200px){
   .rp-card{
     flex: 0 0 calc(100% / 4 - 15px);
   }
 }
 
-@media(max-width: 900px){
+@media(max-width:900px){
   .rp-card{
     flex: 0 0 calc(100% / 3 - 14px);
   }
 }
 
-@media(max-width: 600px){
+@media(max-width:600px){
   .rp-card{
     flex: 0 0 calc(100% / 2 - 10px);
   }
 }
 
-@media(max-width: 420px){
+@media(max-width:420px){
   .rp-card{
     flex: 0 0 100%;
   }
@@ -184,7 +214,7 @@
   position: relative;
   display: block;
   overflow: hidden;
-  aspect-ratio: 4 / 5; /* portrait */
+  aspect-ratio: 4 / 5;
   background: #f5f5f5;
 }
 
@@ -197,24 +227,32 @@
   transition: all .45s ease;
 }
 
+/* MAIN IMAGE */
+
 .rp-main{
   opacity: 1;
+  z-index: 1;
   transform: scale(1);
 }
 
+/* SECOND IMAGE */
+
 .rp-hover{
   opacity: 0;
-  transform: scale(1.05);
+  z-index: 2;
+  transform: scale(1.08);
 }
+
+/* HOVER EFFECT */
 
 .rp-image:hover .rp-main{
   opacity: 0;
-  transform: scale(1.08);
+  transform: scale(1.12);
 }
 
 .rp-image:hover .rp-hover{
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1);
 }
 
 .rp-placeholder{
@@ -232,21 +270,18 @@
 .rp-product-title{
   margin: 0 0 8px;
   font-size: 15px;
-  font-weight: 500;
   line-height: 1.4;
 }
 
 .rp-product-title a{
-  text-decoration: none;
   color: #111;
+  text-decoration: none;
 }
 
 .rp-price{
   display: block;
-  font-size: 15px;
-  font-weight: 700;
   margin-bottom: 12px;
-  color: #111;
+  font-weight: 700;
 }
 
 .rp-btn{
@@ -283,7 +318,7 @@
   background: #333;
 }
 
-@media(max-width: 600px){
+@media(max-width:600px){
 
   .rp-arrow{
     display: none;
