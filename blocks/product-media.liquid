@@ -291,27 +291,99 @@ document.addEventListener("DOMContentLoaded", () => {
   const dotsWrap =
     root.querySelector(".product-media__dots");
 
-  let currentIndex = 0;
   let isAnimating = false;
 
-  /* =========================
-     SLIDES
-  ========================= */
+  /*
+  =========================
+  ORIGINAL SLIDES
+  =========================
+  */
 
-  const slides =
+  const originalSlides =
     Array.from(
       track.querySelectorAll(".product-media__slide")
     );
 
-  if(slides.length <= 1) return;
+  if(originalSlides.length <= 1) return;
 
-  /* =========================
-     STEP
-  ========================= */
+  /*
+  =========================
+  CREATE CLONES
+  =========================
+  */
 
-  const getStep = () => {
+  const firstClone =
+    originalSlides[0].cloneNode(true);
 
-    const slide = slides[0];
+  const secondClone =
+    originalSlides[1]
+      ? originalSlides[1].cloneNode(true)
+      : originalSlides[0].cloneNode(true);
+
+  const lastClone =
+    originalSlides[
+      originalSlides.length - 1
+    ].cloneNode(true);
+
+  const beforeLastClone =
+    originalSlides[
+      originalSlides.length - 2
+    ]
+      ? originalSlides[
+          originalSlides.length - 2
+        ].cloneNode(true)
+      : originalSlides[
+          originalSlides.length - 1
+        ].cloneNode(true);
+
+  firstClone.classList.add("is-clone");
+  secondClone.classList.add("is-clone");
+  lastClone.classList.add("is-clone");
+  beforeLastClone.classList.add("is-clone");
+
+  /*
+  APPEND
+  */
+
+  track.appendChild(firstClone);
+  track.appendChild(secondClone);
+
+  /*
+  PREPEND
+  */
+
+  track.insertBefore(
+    beforeLastClone,
+    originalSlides[0]
+  );
+
+  track.insertBefore(
+    lastClone,
+    originalSlides[0]
+  );
+
+  /*
+  =========================
+  ALL SLIDES
+  =========================
+  */
+
+  const getSlides = () =>
+    Array.from(
+      track.querySelectorAll(".product-media__slide")
+    );
+
+  let currentIndex = 2;
+
+  /*
+  =========================
+  STEP
+  =========================
+  */
+
+  function getStep(){
+
+    const slide = getSlides()[0];
 
     const styles =
       window.getComputedStyle(track);
@@ -321,11 +393,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return slide.getBoundingClientRect().width + gap;
 
-  };
+  }
 
-  /* =========================
-     GO TO
-  ========================= */
+  /*
+  =========================
+  INIT
+  =========================
+  */
+
+  function init(){
+
+    track.scrollTo({
+      left: getStep() * currentIndex,
+      behavior: "auto"
+    });
+
+  }
+
+  init();
+
+  /*
+  =========================
+  GO TO
+  =========================
+  */
 
   function goTo(index){
 
@@ -344,57 +435,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
 
+      fixInfiniteLoop();
+
       isAnimating = false;
 
     }, 500);
 
   }
 
-  /* =========================
-     NEXT
-  ========================= */
+  /*
+  =========================
+  INFINITE LOOP FIX
+  =========================
+  */
+
+  function fixInfiniteLoop(){
+
+    const slides = getSlides();
+
+    /*
+    END
+    */
+
+    if(currentIndex >= slides.length - 2){
+
+      currentIndex = 2;
+
+      track.scrollTo({
+        left: getStep() * currentIndex,
+        behavior: "auto"
+      });
+
+    }
+
+    /*
+    START
+    */
+
+    if(currentIndex <= 1){
+
+      currentIndex =
+        slides.length - 4;
+
+      track.scrollTo({
+        left: getStep() * currentIndex,
+        behavior: "auto"
+      });
+
+    }
+
+  }
+
+  /*
+  =========================
+  NEXT
+  =========================
+  */
 
   next.addEventListener("click", () => {
 
-    if(currentIndex >= slides.length - 1){
-
-      currentIndex = 0;
-
-    }else{
-
-      currentIndex++;
-
-    }
-
-    goTo(currentIndex);
+    goTo(currentIndex + 1);
 
   });
 
-  /* =========================
-     PREV
-  ========================= */
+  /*
+  =========================
+  PREV
+  =========================
+  */
 
   prev.addEventListener("click", () => {
 
-    if(currentIndex <= 0){
-
-      currentIndex = slides.length - 1;
-
-    }else{
-
-      currentIndex--;
-
-    }
-
-    goTo(currentIndex);
+    goTo(currentIndex - 1);
 
   });
 
-  /* =========================
-     DOTS
-  ========================= */
+  /*
+  =========================
+  DOTS
+  =========================
+  */
 
-  slides.forEach((_, index) => {
+  originalSlides.forEach((_, index) => {
 
     const dot =
       document.createElement("button");
@@ -404,7 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dot.addEventListener("click", () => {
 
-      goTo(index);
+      goTo(index + 2);
 
     });
 
@@ -417,11 +539,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const dots =
       dotsWrap.querySelectorAll(".product-media__dot");
 
+    let realIndex =
+      currentIndex - 2;
+
+    if(realIndex < 0){
+      realIndex =
+        originalSlides.length - 1;
+    }
+
+    if(realIndex >= originalSlides.length){
+      realIndex = 0;
+    }
+
     dots.forEach((dot, index) => {
 
       dot.classList.toggle(
         "is-active",
-        index === currentIndex
+        index === realIndex
       );
 
     });
@@ -430,9 +564,81 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateDots();
 
-  /* =========================
-     RESIZE
-  ========================= */
+  /*
+  =========================
+  AUTOPLAY
+  =========================
+  */
+
+  let autoPlay =
+    setInterval(() => {
+
+      goTo(currentIndex + 1);
+
+    }, 4000);
+
+  function resetAuto(){
+
+    clearInterval(autoPlay);
+
+    autoPlay =
+      setInterval(() => {
+
+        goTo(currentIndex + 1);
+
+      }, 4000);
+
+  }
+
+  next.addEventListener("click", resetAuto);
+  prev.addEventListener("click", resetAuto);
+
+  /*
+  =========================
+  TOUCH SWIPE
+  =========================
+  */
+
+  let startX = 0;
+  let endX = 0;
+
+  root.addEventListener("touchstart", (e) => {
+
+    startX = e.touches[0].clientX;
+
+  });
+
+  root.addEventListener("touchmove", (e) => {
+
+    endX = e.touches[0].clientX;
+
+  });
+
+  root.addEventListener("touchend", () => {
+
+    const diff = startX - endX;
+
+    if(diff > 50){
+
+      goTo(currentIndex + 1);
+
+    }
+
+    if(diff < -50){
+
+      goTo(currentIndex - 1);
+
+    }
+
+    resetAuto();
+
+  });
+
+  /*
+  =========================
+  RESIZE
+  =========================
+  */
 
   window.addEventListener("resize", () => {
 
