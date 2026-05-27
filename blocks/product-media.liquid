@@ -1,191 +1,373 @@
 <div class="product-media" data-media {{ block.shopify_attributes }}>
 
+  <!-- MAIN TRACK -->
   <div class="product-media__track">
 
     {% for image in product.images %}
       <div class="product-media__slide">
-        {% render 'image', class: 'product-image', image: image %}
+
+        <div class="product-media__image-wrap">
+
+          {% render 'image',
+            class: 'product-image',
+            image: image
+          %}
+
+        </div>
+
       </div>
     {% endfor %}
 
   </div>
 
-  <button class="product-media__arrow product-media__arrow--prev"
-          aria-label="Previous image">‹</button>
+  <!-- ARROWS -->
 
-  <button class="product-media__arrow product-media__arrow--next"
-          aria-label="Next image">›</button>
+  <button
+    class="product-media__arrow product-media__arrow--prev"
+    aria-label="Previous image"
+  >
+    &#10094;
+  </button>
 
-  <div class="product-media__dots"
-       role="tablist"
-       aria-label="Image pagination"></div>
+  <button
+    class="product-media__arrow product-media__arrow--next"
+    aria-label="Next image"
+  >
+    &#10095;
+  </button>
+
+  <!-- DOTS -->
+
+  <div
+    class="product-media__dots"
+    role="tablist"
+    aria-label="Image pagination"
+  ></div>
 
 </div>
+
 {% stylesheet %}
 
 /* =========================
-   media BASE
+   MAIN WRAPPER
 ========================= */
 
-.product-media {
+.product-media{
   position: relative;
-  max-width: 100%;
+  width: 100%;
   overflow: hidden;
-  margin: auto;
+  background: #f3f3f3;
+  padding: 18px 0 50px;
 }
 
-.product-media__track {
+/* =========================
+   TRACK
+========================= */
+
+.product-media__track{
   display: flex;
   gap: 10px;
+
   overflow-x: auto;
+
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+
   scrollbar-width: none;
+
+  padding: 0 14%;
 }
 
-.product-media__track::-webkit-scrollbar {
+.product-media__track::-webkit-scrollbar{
   display: none;
 }
 
-/* DEFAULT (mobile) */
-.product-media__slide {
-  flex: 0 0 100%;
+/* =========================
+   SLIDES
+========================= */
+
+/* MOBILE */
+
+.product-media__slide{
+  flex: 0 0 88%;
   scroll-snap-align: center;
 }
 
-/* =========================
-   TABLET (2 SLIDES)
-========================= */
-@media (min-width: 768px) {
-  .product-media__slide {
-    flex: 0 0 50%;
+/* TABLET */
+
+@media(min-width: 768px){
+
+  .product-media__slide{
+    flex: 0 0 48%;
   }
+
+}
+
+/* DESKTOP */
+
+@media(min-width: 1024px){
+
+  .product-media__slide{
+    flex: 0 0 30%;
+  }
+
 }
 
 /* =========================
-   DESKTOP (3 PORTRAIT MODE)
+   IMAGE WRAPPER
 ========================= */
-@media (min-width: 1024px) {
-  .product-media__slide {
-    flex: 0 0 33.333%;
-  }
+
+.product-media__image-wrap{
+  position: relative;
+  overflow: hidden;
+
+  /* TRUE PORTRAIT */
+  aspect-ratio: 2 / 3;
+
+  background: #e9e9e9;
 }
 
-/* IMAGE */
-.product-image img {
+/* =========================
+   IMAGE
+========================= */
+
+.product-image,
+.product-image img{
   width: 100%;
-  height: 650px;
+  height: 100%;
+}
+
+.product-image img{
+  position: absolute;
+  inset: 0;
+
   object-fit: cover;
   display: block;
+
+  transition: transform .7s ease;
+}
+
+/* HOVER */
+
+.product-media__slide:hover .product-image img{
+  transform: scale(1.04);
 }
 
 /* =========================
    ARROWS
 ========================= */
 
-.product-media__arrow {
+.product-media__arrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  z-index: 20;
+
+  width: 52px;
+  height: 52px;
+
   border: none;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.92);
+
+  color: #111;
+  font-size: 24px;
+
   cursor: pointer;
-  z-index: 10;
+
+  transition: .3s ease;
+
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
 }
 
-.product-media__arrow--prev { left: 10px; }
-.product-media__arrow--next { right: 10px; }
+.product-media__arrow:hover{
+  background: #111;
+  color: #fff;
+}
+
+.product-media__arrow--prev{
+  left: 22px;
+}
+
+.product-media__arrow--next{
+  right: 22px;
+}
 
 /* =========================
    DOTS
 ========================= */
 
-.product-media__dots {
+.product-media__dots{
   position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
+  left: 50%;
+  bottom: 16px;
+
+  transform: translateX(-50%);
+
   display: flex;
-  justify-content: center;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 }
 
-.product-media__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.product-media__dot{
+  width: 7px;
+  height: 7px;
+
+  border-radius: 999px;
   border: none;
-  background: #ccc;
+
+  background: #bdbdbd;
+
   cursor: pointer;
+
+  transition: .3s ease;
 }
 
-.product-media__dot.is-active {
-  background: #000;
+.product-media__dot.is-active{
+  background: #111;
+  transform: scale(1.2);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 767px){
+
+  .product-media{
+    padding-bottom: 45px;
+  }
+
+  .product-media__track{
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .product-media__slide{
+    flex: 0 0 84%;
+  }
+
+  .product-media__arrow{
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+  }
+
+  .product-media__arrow--prev{
+    left: 10px;
+  }
+
+  .product-media__arrow--next{
+    right: 10px;
+  }
+
 }
 
 {% endstylesheet %}
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const root = document.querySelector("[data-media]");
   if (!root) return;
 
-  const track = root.querySelector(".product-media__track");
-  const prev = root.querySelector(".product-media__arrow--prev");
-  const next = root.querySelector(".product-media__arrow--next");
-  const dotsWrap = root.querySelector(".product-media__dots");
+  const track =
+    root.querySelector(".product-media__track");
+
+  const prev =
+    root.querySelector(".product-media__arrow--prev");
+
+  const next =
+    root.querySelector(".product-media__arrow--next");
+
+  const dotsWrap =
+    root.querySelector(".product-media__dots");
 
   let currentIndex = 1;
   let isAnimating = false;
 
   /* =========================
-     ORIGINAL SLIDES ONLY
+     ORIGINAL SLIDES
   ========================= */
-  const originalSlides = Array.from(track.querySelectorAll(".product-media__slide"));
 
-  if (originalSlides.length <= 1) return;
+  const originalSlides =
+    Array.from(
+      track.querySelectorAll(".product-media__slide")
+    );
+
+  if(originalSlides.length <= 1) return;
 
   /* =========================
      CLONES
   ========================= */
-  const firstClone = originalSlides[0].cloneNode(true);
-  const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+
+  const firstClone =
+    originalSlides[0].cloneNode(true);
+
+  const lastClone =
+    originalSlides[
+      originalSlides.length - 1
+    ].cloneNode(true);
 
   firstClone.classList.add("is-clone");
   lastClone.classList.add("is-clone");
 
   track.appendChild(firstClone);
-  track.insertBefore(lastClone, originalSlides[0]);
+
+  track.insertBefore(
+    lastClone,
+    originalSlides[0]
+  );
 
   /* =========================
-     ALL SLIDES (INCLUDING CLONES)
+     ALL SLIDES
   ========================= */
+
   const getAllSlides = () =>
-    Array.from(track.querySelectorAll(".product-media__slide"));
+    Array.from(
+      track.querySelectorAll(".product-media__slide")
+    );
 
-  const getStep = () => getAllSlides()[0].offsetWidth + 10;
+  const getStep = () => {
+
+    const slide = getAllSlides()[0];
+
+    const styles =
+      window.getComputedStyle(track);
+
+    const gap =
+      parseFloat(styles.columnGap || styles.gap || 0);
+
+    return slide.getBoundingClientRect().width + gap;
+
+  };
 
   /* =========================
-     INIT POSITION
+     INIT
   ========================= */
-  const init = () => {
+
+  function init(){
+
     track.scrollTo({
       left: getStep() * currentIndex,
       behavior: "auto"
     });
-  };
+
+  }
 
   init();
 
   /* =========================
-     GO TO SLIDE
+     GO TO
   ========================= */
-  function goTo(i) {
-    if (isAnimating) return;
+
+  function goTo(i){
+
+    if(isAnimating) return;
+
     isAnimating = true;
 
     currentIndex = i;
@@ -196,71 +378,121 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setTimeout(() => {
+
       fixLoopEdges();
+
       updateDots();
+
       isAnimating = false;
-    }, 350);
+
+    }, 500);
+
   }
 
   /* =========================
-     INFINITE LOOP FIX
+     LOOP FIX
   ========================= */
-  function fixLoopEdges() {
+
+  function fixLoopEdges(){
+
     const all = getAllSlides();
 
-    if (currentIndex === all.length - 1) {
+    if(currentIndex === all.length - 1){
+
       currentIndex = 1;
+
       track.scrollTo({
         left: getStep() * currentIndex,
         behavior: "auto"
       });
+
     }
 
-    if (currentIndex === 0) {
+    if(currentIndex === 0){
+
       currentIndex = all.length - 2;
+
       track.scrollTo({
         left: getStep() * currentIndex,
         behavior: "auto"
       });
+
     }
+
   }
 
   /* =========================
-     NAVIGATION
+     BUTTONS
   ========================= */
-  next.addEventListener("click", () => goTo(currentIndex + 1));
-  prev.addEventListener("click", () => goTo(currentIndex - 1));
+
+  next.addEventListener("click", () => {
+    goTo(currentIndex + 1);
+  });
+
+  prev.addEventListener("click", () => {
+    goTo(currentIndex - 1);
+  });
 
   /* =========================
      DOTS
   ========================= */
+
   const total = originalSlides.length;
 
-  for (let i = 0; i < total; i++) {
-    const dot = document.createElement("button");
-    dot.className = "product-media__dot";
-    dot.addEventListener("click", () => goTo(i + 1));
+  for(let i = 0; i < total; i++){
+
+    const dot =
+      document.createElement("button");
+
+    dot.className =
+      "product-media__dot";
+
+    dot.addEventListener("click", () => {
+      goTo(i + 1);
+    });
+
     dotsWrap.appendChild(dot);
+
   }
 
-  function updateDots() {
-    const dots = dotsWrap.querySelectorAll(".product-media__dot");
+  function updateDots(){
+
+    const dots =
+      dotsWrap.querySelectorAll(".product-media__dot");
 
     let realIndex = currentIndex - 1;
 
-    if (realIndex < 0) realIndex = total - 1;
-    if (realIndex >= total) realIndex = 0;
+    if(realIndex < 0){
+      realIndex = total - 1;
+    }
+
+    if(realIndex >= total){
+      realIndex = 0;
+    }
 
     dots.forEach((dot, i) => {
-      dot.classList.toggle("is-active", i === realIndex);
+
+      dot.classList.toggle(
+        "is-active",
+        i === realIndex
+      );
+
     });
+
   }
 
   updateDots();
 
+  /* =========================
+     RESIZE
+  ========================= */
+
+  window.addEventListener("resize", () => {
+    init();
+  });
+
 });
 </script>
-
 
 {% schema %}
 {
