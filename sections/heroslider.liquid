@@ -1,70 +1,52 @@
 <div class="neo-slider" id="neo-slider-{{ section.id }}">
 
-  <!-- LEFT ARROW -->
-  <button class="neo-slider__arrow neo-slider__arrow--left">
+  <button class="neo-slider__arrow neo-slider__arrow--left" id="prev-{{ section.id }}">
     &#10094;
   </button>
 
-  <!-- VIEWPORT -->
   <div class="neo-slider__viewport">
 
-    <!-- TRACK -->
-    <div class="neo-slider__track">
+    <div class="neo-slider__track" id="track-{{ section.id }}">
 
-      {% assign loop_count = 12 %}
+      {% for block in section.blocks %}
 
-      {% for i in (1..loop_count) %}
-        {% for block in section.blocks %}
+        <div class="neo-slider__slide" {{ block.shopify_attributes }}>
 
-          <div
-            class="neo-slider__slide"
-            {{ block.shopify_attributes }}
-          >
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}">
+          {% endif %}
 
-            {% if block.settings.link != blank %}
-              <a
-                href="{{ block.settings.link }}"
-                class="neo-slider__link"
-              >
-            {% endif %}
+          {% if block.settings.image != blank %}
+            <img
+              src="{{ block.settings.image | img_url: '1600x' }}"
+              alt=""
+              class="neo-slider__image"
+            >
+          {% else %}
+            {{ 'image' | placeholder_svg_tag }}
+          {% endif %}
 
-            {% if block.settings.image != blank %}
+          {% if block.settings.link != blank %}
+            </a>
+          {% endif %}
 
-              <img
-                src="{{ block.settings.image | image_url: width: 2000 }}"
-                alt=""
-                class="neo-slider__image"
-                loading="lazy"
-              >
+        </div>
 
-            {% else %}
-
-              {{ 'image' | placeholder_svg_tag }}
-
-            {% endif %}
-
-            {% if block.settings.link != blank %}
-              </a>
-            {% endif %}
-
-          </div>
-
-        {% endfor %}
       {% endfor %}
 
     </div>
 
   </div>
 
-  <!-- RIGHT ARROW -->
-  <button class="neo-slider__arrow neo-slider__arrow--right">
+  <button class="neo-slider__arrow neo-slider__arrow--right" id="next-{{ section.id }}">
     &#10095;
   </button>
+
+  <div class="neo-slider__dots" id="dots-{{ section.id }}"></div>
 
 </div>
 
 <style>
-
 #neo-slider-{{ section.id }}{
   position: relative;
   width: 100%;
@@ -72,259 +54,247 @@
   background: #fff;
 }
 
-/* VIEWPORT */
-
 #neo-slider-{{ section.id }} .neo-slider__viewport{
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
-
-/* TRACK */
 
 #neo-slider-{{ section.id }} .neo-slider__track{
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  transition: transform 1.2s cubic-bezier(.77,0,.175,1);
   will-change: transform;
+  padding-left: 0;
 }
-
-/* SLIDES */
-
 #neo-slider-{{ section.id }} .neo-slider__slide{
-  position: relative;
+  flex: 0 0 28%;
   overflow: hidden;
-
-  flex: 0 0 22%;
-
-  /* PORTRAIT RATIO */
-  aspect-ratio: 4 / 5;
-
-  background: #f5f5f5;
+  position: relative;
 }
-
-/* LINK */
-
-#neo-slider-{{ section.id }} .neo-slider__link{
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* IMAGE */
 
 #neo-slider-{{ section.id }} .neo-slider__image{
-  position: absolute;
-  inset: 0;
-
   width: 100%;
-  height: 100%;
-
+  height: 100vh;
   object-fit: cover;
   display: block;
-
-  transition: transform .6s ease;
 }
 
-/* HOVER */
-
-#neo-slider-{{ section.id }} .neo-slider__slide:hover .neo-slider__image{
-  transform: scale(1.05);
-}
-
-/* ARROWS */
+/* arrows */
 
 #neo-slider-{{ section.id }} .neo-slider__arrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 30;
+  z-index: 20;
 
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
 
   border: none;
-  background: rgba(255,255,255,.85);
+  background: transparent;
 
-  color: #111;
-  font-size: 28px;
+  font-size: 42px;
+  color: #3b82f6;
 
   cursor: pointer;
-
-  transition: .3s ease;
-
-  backdrop-filter: blur(4px);
-}
-
-#neo-slider-{{ section.id }} .neo-slider__arrow:hover{
-  background: #111;
-  color: #fff;
 }
 
 #neo-slider-{{ section.id }} .neo-slider__arrow--left{
-  left: 10px;
+  left: 5px;
 }
 
 #neo-slider-{{ section.id }} .neo-slider__arrow--right{
-  right: 10px;
+  right: 5px;
 }
 
-/* TABLET */
+/* dots */
 
-@media(max-width: 1100px){
-
-  #neo-slider-{{ section.id }} .neo-slider__slide{
-    flex: 0 0 30%;
-  }
-
+#neo-slider-{{ section.id }} .neo-slider__dots{
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 20;
 }
 
-/* MOBILE */
+#neo-slider-{{ section.id }} .neo-slider__dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  transition: .3s;
+  cursor: pointer;
+}
 
-@media(max-width: 768px){
+#neo-slider-{{ section.id }} .neo-slider__dot.active{
+  background: #fff;
+  transform: scale(1.2);
+}
 
-  #neo-slider-{{ section.id }} .neo-slider__track{
-    gap: 10px;
-  }
+/* mobile */
+
+@media(max-width:768px){
 
   #neo-slider-{{ section.id }} .neo-slider__slide{
     flex: 0 0 82%;
-    aspect-ratio: 4 / 5;
   }
 
-  #neo-slider-{{ section.id }} .neo-slider__arrow{
-    width: 42px;
-    height: 42px;
-    font-size: 22px;
+  #neo-slider-{{ section.id }} .neo-slider__image{
+    height: 75vh;
   }
 
 }
-
 </style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-  const slider =
-    document.querySelector("#neo-slider-{{ section.id }}");
+  const track = document.getElementById("track-{{ section.id }}");
 
-  if(!slider) return;
+  let slides = Array.from(track.children);
 
-  const track =
-    slider.querySelector(".neo-slider__track");
+  const prevBtn = document.getElementById("prev-{{ section.id }}");
+  const nextBtn = document.getElementById("next-{{ section.id }}");
 
-  const slides =
-    slider.querySelectorAll(".neo-slider__slide");
+  const dotsContainer = document.getElementById("dots-{{ section.id }}");
 
-  const nextBtn =
-    slider.querySelector(".neo-slider__arrow--right");
+  /* CLONE FIRST + LAST */
 
-  const prevBtn =
-    slider.querySelector(".neo-slider__arrow--left");
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slides.length - 1].cloneNode(true);
 
-  const originalSlides =
-    {{ section.blocks.size }};
+  track.appendChild(firstClone);
+  track.insertBefore(lastClone, slides[0]);
 
-  const repeatCount = 12;
+  slides = Array.from(track.children);
 
-  /*
-  START IN CENTER
-  */
+  let index = 1;
 
-  let index =
-    originalSlides * Math.floor(repeatCount / 2);
-
-  let isAnimating = false;
-
-  function getSlideWidth(){
-
-    const slide = slides[0];
-
-    const styles =
-      window.getComputedStyle(track);
-
-    const gap =
-      parseFloat(styles.columnGap || styles.gap || 0);
-
-    return slide.getBoundingClientRect().width + gap;
-
+  function slideWidth(){
+    return slides[0].offsetWidth + 18;
   }
 
-  function updateSlider(animated = true){
+  /* START POSITION */
 
-    if(animated){
+  track.style.transform =
+    `translateX(-${slideWidth() * index}px)`;
 
-      track.style.transition =
-        "transform 1s cubic-bezier(.77,0,.175,1)";
+  /* DOTS */
 
-    }else{
+  const realSlidesCount = slides.length - 2;
 
-      track.style.transition = "none";
+  for(let i = 0; i < realSlidesCount; i++){
 
+    const dot = document.createElement("div");
+
+    dot.classList.add("neo-slider__dot");
+
+    if(i === 0){
+      dot.classList.add("active");
     }
 
-    track.style.transform =
-      `translateX(-${index * getSlideWidth()}px)`;
+    dot.addEventListener("click", ()=>{
+
+      index = i + 1;
+
+      updateSlider();
+
+      resetAuto();
+
+    });
+
+    dotsContainer.appendChild(dot);
 
   }
 
-  updateSlider(false);
+  const dots = dotsContainer.querySelectorAll(".neo-slider__dot");
+
+  function updateDots(){
+
+    dots.forEach(dot=>{
+      dot.classList.remove("active");
+    });
+
+    let dotIndex = index - 1;
+
+    if(dotIndex >= realSlidesCount){
+      dotIndex = 0;
+    }
+
+    if(dotIndex < 0){
+      dotIndex = realSlidesCount - 1;
+    }
+
+    if(dots[dotIndex]){
+      dots[dotIndex].classList.add("active");
+    }
+
+  }
+
+  function updateSlider(){
+
+    track.style.transition =
+      "transform 1.2s cubic-bezier(.77,0,.175,1)";
+
+    track.style.transform =
+      `translateX(-${slideWidth() * index}px)`;
+
+    updateDots();
+
+  }
 
   function nextSlide(){
 
-    if(isAnimating) return;
-
-    isAnimating = true;
+    if(index >= slides.length - 1) return;
 
     index++;
 
-    updateSlider(true);
+    updateSlider();
 
   }
 
   function prevSlide(){
 
-    if(isAnimating) return;
-
-    isAnimating = true;
+    if(index <= 0) return;
 
     index--;
 
-    updateSlider(true);
+    updateSlider();
 
   }
 
+  /* seamless loop */
+
   track.addEventListener("transitionend", ()=>{
 
-    isAnimating = false;
+    /* reached fake last */
 
-    /*
-    LOOP END
-    */
+    if(slides[index] === firstClone){
 
-    if(index >= originalSlides * (repeatCount - 3)){
+      track.style.transition = "none";
 
-      index =
-        originalSlides * Math.floor(repeatCount / 2);
+      index = 1;
 
-      updateSlider(false);
+      track.style.transform =
+        `translateX(-${slideWidth() * index}px)`;
 
     }
 
-    /*
-    LOOP START
-    */
+    /* reached fake first */
 
-    if(index <= originalSlides){
+    if(slides[index] === lastClone){
 
-      index =
-        originalSlides * Math.floor(repeatCount / 2);
+      track.style.transition = "none";
 
-      updateSlider(false);
+      index = slides.length - 2;
+
+      track.style.transform =
+        `translateX(-${slideWidth() * index}px)`;
 
     }
 
   });
-
-  /* ARROWS */
 
   nextBtn.addEventListener("click", ()=>{
 
@@ -342,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   });
 
-  /* AUTOPLAY */
+  /* AUTO */
 
   let autoSlide = setInterval(()=>{
 
@@ -367,19 +337,19 @@ document.addEventListener("DOMContentLoaded", function(){
   let startX = 0;
   let endX = 0;
 
-  slider.addEventListener("touchstart", (e)=>{
+  track.addEventListener("touchstart", (e)=>{
 
     startX = e.touches[0].clientX;
 
   });
 
-  slider.addEventListener("touchmove", (e)=>{
+  track.addEventListener("touchmove", (e)=>{
 
     endX = e.touches[0].clientX;
 
   });
 
-  slider.addEventListener("touchend", ()=>{
+  track.addEventListener("touchend", ()=>{
 
     const diff = startX - endX;
 
@@ -399,11 +369,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
   });
 
-  /* RESIZE */
-
   window.addEventListener("resize", ()=>{
 
-    updateSlider(false);
+    track.style.transition = "none";
+
+    track.style.transform =
+      `translateX(-${slideWidth() * index}px)`;
 
   });
 
@@ -412,9 +383,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
 {% schema %}
 {
-  "name": "Premium Portrait Carousel",
+  "name": "Neo Hero Slider",
   "settings": [],
-  "max_blocks": 20,
   "blocks": [
     {
       "type": "slide",
@@ -435,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function(){
   ],
   "presets": [
     {
-      "name": "Premium Portrait Carousel"
+      "name": "Neo Hero Slider"
     }
   ]
 }
