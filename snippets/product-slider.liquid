@@ -1,262 +1,655 @@
-<div class="product-slider" data-slider>
+<div class="product-slider" data-slider {{ section.shopify_attributes }}>
 
+  <!-- TRACK -->
   <div class="product-slider__track">
 
     {% for image in product.images %}
+
       <div class="product-slider__slide">
-        {% render 'image', class: 'product-image', image: image %}
+
+        <div class="product-slider__image-wrap">
+
+          {% render 'image',
+            class: 'product-slider__image',
+            image: image
+          %}
+
+        </div>
+
       </div>
+
     {% endfor %}
 
   </div>
 
-  <button class="product-slider__arrow product-slider__arrow--prev"
-          aria-label="Previous image">‹</button>
+  <!-- PREV -->
+  <button
+    class="product-slider__arrow product-slider__arrow--prev"
+    aria-label="Previous image"
+  >
+    &#10094;
+  </button>
 
-  <button class="product-slider__arrow product-slider__arrow--next"
-          aria-label="Next image">›</button>
+  <!-- NEXT -->
+  <button
+    class="product-slider__arrow product-slider__arrow--next"
+    aria-label="Next image"
+  >
+    &#10095;
+  </button>
 
-  <div class="product-slider__dots"
-       role="tablist"
-       aria-label="Image pagination"></div>
+  <!-- DOTS -->
+  <div
+    class="product-slider__dots"
+    role="tablist"
+    aria-label="Image pagination"
+  ></div>
 
 </div>
+
 {% stylesheet %}
 
 /* =========================
-   SLIDER BASE
+   WRAPPER
 ========================= */
 
-.product-slider {
+.product-slider{
   position: relative;
-  max-width: 100%;
+  width: 100%;
   overflow: hidden;
-  margin: auto;
+
+  background: #fff;
+
+  padding: 14px 0 55px;
 }
 
-.product-slider__track {
+/* =========================
+   TRACK
+========================= */
+
+.product-slider__track{
   display: flex;
+  align-items: stretch;
   gap: 10px;
+
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
   scrollbar-width: none;
+
+  padding: 0 6px;
 }
 
-.product-slider__track::-webkit-scrollbar {
+.product-slider__track::-webkit-scrollbar{
   display: none;
 }
 
-/* DEFAULT (mobile) */
-.product-slider__slide {
+/* =========================
+   SLIDES
+========================= */
+
+/* MOBILE */
+
+.product-slider__slide{
   flex: 0 0 100%;
   scroll-snap-align: center;
 }
 
-/* =========================
-   TABLET (2 SLIDES)
-========================= */
-@media (min-width: 768px) {
-  .product-slider__slide {
-    flex: 0 0 50%;
+/* TABLET */
+
+@media(min-width:768px){
+
+  .product-slider__slide{
+    flex: 0 0 calc(50% - 5px);
   }
+
+}
+
+/* DESKTOP */
+
+@media(min-width:1024px){
+
+  .product-slider__slide{
+    flex: 0 0 calc(33.333% - 8px);
+  }
+
 }
 
 /* =========================
-   DESKTOP (3 PORTRAIT MODE)
+   IMAGE WRAP
 ========================= */
-@media (min-width: 1024px) {
-  .product-slider__slide {
-    flex: 0 0 33.333%;
-  }
-}
 
-/* IMAGE */
-.product-image img {
+.product-slider__image-wrap{
+  position: relative;
+  overflow: hidden;
+
   width: 100%;
-  height: 650px;
+  height: 100%;
+
+  aspect-ratio: 2 / 3;
+
+  background: #ececec;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.product-slider__image{
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+.product-slider__image img{
+  width: 100%;
+  height: 100%;
+
   object-fit: cover;
   display: block;
+
+  transition: transform .7s ease;
+}
+
+/* HOVER */
+
+.product-slider__slide:hover
+.product-slider__image img{
+  transform: scale(1.04);
 }
 
 /* =========================
    ARROWS
 ========================= */
 
-.product-slider__arrow {
+.product-slider__arrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  z-index: 20;
+
+  width: 52px;
+  height: 52px;
+
   border: none;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.92);
+
+  color: #111;
+  font-size: 24px;
+
   cursor: pointer;
-  z-index: 10;
+
+  transition: .3s ease;
+
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
 }
 
-.product-slider__arrow--prev { left: 10px; }
-.product-slider__arrow--next { right: 10px; }
+.product-slider__arrow:hover{
+  background: #111;
+  color: #fff;
+}
+
+.product-slider__arrow--prev{
+  left: 16px;
+}
+
+.product-slider__arrow--next{
+  right: 16px;
+}
 
 /* =========================
    DOTS
 ========================= */
 
-.product-slider__dots {
+.product-slider__dots{
   position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
+
+  left: 50%;
+  bottom: 18px;
+
+  transform: translateX(-50%);
+
   display: flex;
-  justify-content: center;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 }
 
-.product-slider__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.product-slider__dot{
+  width: 7px;
+  height: 7px;
+
+  border-radius: 999px;
   border: none;
-  background: #ccc;
+
+  background: #bbb;
+
   cursor: pointer;
+
+  transition: .3s ease;
 }
 
-.product-slider__dot.is-active {
-  background: #000;
+.product-slider__dot.is-active{
+  background: #111;
+  transform: scale(1.2);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:767px){
+
+  .product-slider{
+    padding-bottom: 45px;
+  }
+
+  .product-slider__track{
+    gap: 8px;
+  }
+
+  .product-slider__slide{
+    flex: 0 0 85%;
+  }
+
+  .product-slider__arrow{
+    width: 42px;
+    height: 42px;
+
+    font-size: 18px;
+  }
+
+  .product-slider__arrow--prev{
+    left: 8px;
+  }
+
+  .product-slider__arrow--next{
+    right: 8px;
+  }
+
 }
 
 {% endstylesheet %}
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const root = document.querySelector("[data-slider]");
-  if (!root) return;
+  const root =
+    document.querySelector("[data-slider]");
 
-  const track = root.querySelector(".product-slider__track");
-  const prev = root.querySelector(".product-slider__arrow--prev");
-  const next = root.querySelector(".product-slider__arrow--next");
-  const dotsWrap = root.querySelector(".product-slider__dots");
+  if(!root) return;
 
-  let currentIndex = 1;
+  const track =
+    root.querySelector(".product-slider__track");
+
+  const prev =
+    root.querySelector(".product-slider__arrow--prev");
+
+  const next =
+    root.querySelector(".product-slider__arrow--next");
+
+  const dotsWrap =
+    root.querySelector(".product-slider__dots");
+
   let isAnimating = false;
 
-  /* =========================
-     ORIGINAL SLIDES ONLY
-  ========================= */
-  const originalSlides = Array.from(track.querySelectorAll(".product-slider__slide"));
+  /*
+  =========================
+  ORIGINAL SLIDES
+  =========================
+  */
 
-  if (originalSlides.length <= 1) return;
+  const originalSlides =
+    Array.from(
+      track.querySelectorAll(".product-slider__slide")
+    );
 
-  /* =========================
-     CLONES
-  ========================= */
-  const firstClone = originalSlides[0].cloneNode(true);
-  const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+  if(originalSlides.length <= 1) return;
+
+  /*
+  =========================
+  CREATE CLONES
+  =========================
+  */
+
+  const firstClone =
+    originalSlides[0].cloneNode(true);
+
+  const secondClone =
+    originalSlides[1]
+      ? originalSlides[1].cloneNode(true)
+      : originalSlides[0].cloneNode(true);
+
+  const lastClone =
+    originalSlides[
+      originalSlides.length - 1
+    ].cloneNode(true);
+
+  const beforeLastClone =
+    originalSlides[
+      originalSlides.length - 2
+    ]
+      ? originalSlides[
+          originalSlides.length - 2
+        ].cloneNode(true)
+      : originalSlides[
+          originalSlides.length - 1
+        ].cloneNode(true);
 
   firstClone.classList.add("is-clone");
+  secondClone.classList.add("is-clone");
   lastClone.classList.add("is-clone");
+  beforeLastClone.classList.add("is-clone");
 
   track.appendChild(firstClone);
-  track.insertBefore(lastClone, originalSlides[0]);
+  track.appendChild(secondClone);
 
-  /* =========================
-     ALL SLIDES (INCLUDING CLONES)
-  ========================= */
-  const getAllSlides = () =>
-    Array.from(track.querySelectorAll(".product-slider__slide"));
+  track.insertBefore(
+    beforeLastClone,
+    originalSlides[0]
+  );
 
-  const getStep = () => getAllSlides()[0].offsetWidth + 10;
+  track.insertBefore(
+    lastClone,
+    originalSlides[0]
+  );
 
-  /* =========================
-     INIT POSITION
-  ========================= */
-  const init = () => {
+  /*
+  =========================
+  ALL SLIDES
+  =========================
+  */
+
+  const getSlides = () =>
+    Array.from(
+      track.querySelectorAll(".product-slider__slide")
+    );
+
+  let currentIndex = 2;
+
+  /*
+  =========================
+  STEP
+  =========================
+  */
+
+  function getStep(){
+
+    const slide = getSlides()[0];
+
+    const styles =
+      window.getComputedStyle(track);
+
+    const gap =
+      parseFloat(styles.columnGap || styles.gap || 0);
+
+    return slide.getBoundingClientRect().width + gap;
+
+  }
+
+  /*
+  =========================
+  INIT
+  =========================
+  */
+
+  function init(){
+
     track.scrollTo({
       left: getStep() * currentIndex,
       behavior: "auto"
     });
-  };
+
+  }
 
   init();
 
-  /* =========================
-     GO TO SLIDE
-  ========================= */
-  function goTo(i) {
-    if (isAnimating) return;
+  /*
+  =========================
+  GO TO
+  =========================
+  */
+
+  function goTo(index){
+
+    if(isAnimating) return;
+
     isAnimating = true;
 
-    currentIndex = i;
+    currentIndex = index;
 
     track.scrollTo({
       left: getStep() * currentIndex,
       behavior: "smooth"
     });
 
+    updateDots();
+
     setTimeout(() => {
-      fixLoopEdges();
-      updateDots();
+
+      fixInfiniteLoop();
+
       isAnimating = false;
-    }, 350);
+
+    }, 500);
+
   }
 
-  /* =========================
-     INFINITE LOOP FIX
-  ========================= */
-  function fixLoopEdges() {
-    const all = getAllSlides();
+  /*
+  =========================
+  INFINITE LOOP
+  =========================
+  */
 
-    if (currentIndex === all.length - 1) {
-      currentIndex = 1;
+  function fixInfiniteLoop(){
+
+    const slides = getSlides();
+
+    if(currentIndex >= slides.length - 2){
+
+      currentIndex = 2;
+
       track.scrollTo({
         left: getStep() * currentIndex,
         behavior: "auto"
       });
+
     }
 
-    if (currentIndex === 0) {
-      currentIndex = all.length - 2;
+    if(currentIndex <= 1){
+
+      currentIndex =
+        slides.length - 4;
+
       track.scrollTo({
         left: getStep() * currentIndex,
         behavior: "auto"
       });
+
     }
+
   }
 
-  /* =========================
-     NAVIGATION
-  ========================= */
-  next.addEventListener("click", () => goTo(currentIndex + 1));
-  prev.addEventListener("click", () => goTo(currentIndex - 1));
+  /*
+  =========================
+  NEXT
+  =========================
+  */
 
-  /* =========================
-     DOTS
-  ========================= */
-  const total = originalSlides.length;
+  next.addEventListener("click", () => {
 
-  for (let i = 0; i < total; i++) {
-    const dot = document.createElement("button");
-    dot.className = "product-slider__dot";
-    dot.addEventListener("click", () => goTo(i + 1));
-    dotsWrap.appendChild(dot);
-  }
+    goTo(currentIndex + 1);
 
-  function updateDots() {
-    const dots = dotsWrap.querySelectorAll(".product-slider__dot");
+  });
 
-    let realIndex = currentIndex - 1;
+  /*
+  =========================
+  PREV
+  =========================
+  */
 
-    if (realIndex < 0) realIndex = total - 1;
-    if (realIndex >= total) realIndex = 0;
+  prev.addEventListener("click", () => {
 
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("is-active", i === realIndex);
+    goTo(currentIndex - 1);
+
+  });
+
+  /*
+  =========================
+  DOTS
+  =========================
+  */
+
+  originalSlides.forEach((_, index) => {
+
+    const dot =
+      document.createElement("button");
+
+    dot.className =
+      "product-slider__dot";
+
+    dot.addEventListener("click", () => {
+
+      goTo(index + 2);
+
     });
+
+    dotsWrap.appendChild(dot);
+
+  });
+
+  function updateDots(){
+
+    const dots =
+      dotsWrap.querySelectorAll(".product-slider__dot");
+
+    let realIndex =
+      currentIndex - 2;
+
+    if(realIndex < 0){
+      realIndex =
+        originalSlides.length - 1;
+    }
+
+    if(realIndex >= originalSlides.length){
+      realIndex = 0;
+    }
+
+    dots.forEach((dot, index) => {
+
+      dot.classList.toggle(
+        "is-active",
+        index === realIndex
+      );
+
+    });
+
   }
 
   updateDots();
 
+  /*
+  =========================
+  AUTOPLAY
+  =========================
+  */
+
+  let autoPlay =
+    setInterval(() => {
+
+      goTo(currentIndex + 1);
+
+    }, 4000);
+
+  function resetAuto(){
+
+    clearInterval(autoPlay);
+
+    autoPlay =
+      setInterval(() => {
+
+        goTo(currentIndex + 1);
+
+      }, 4000);
+
+  }
+
+  next.addEventListener("click", resetAuto);
+  prev.addEventListener("click", resetAuto);
+
+  /*
+  =========================
+  TOUCH SWIPE
+  =========================
+  */
+
+  let startX = 0;
+  let endX = 0;
+
+  root.addEventListener("touchstart", (e) => {
+
+    startX = e.touches[0].clientX;
+
+  });
+
+  root.addEventListener("touchmove", (e) => {
+
+    endX = e.touches[0].clientX;
+
+  });
+
+  root.addEventListener("touchend", () => {
+
+    const diff = startX - endX;
+
+    if(diff > 50){
+
+      goTo(currentIndex + 1);
+
+    }
+
+    if(diff < -50){
+
+      goTo(currentIndex - 1);
+
+    }
+
+    resetAuto();
+
+  });
+
+  /*
+  =========================
+  RESIZE
+  =========================
+  */
+
+  window.addEventListener("resize", () => {
+
+    track.scrollTo({
+      left: getStep() * currentIndex,
+      behavior: "auto"
+    });
+
+  });
+
 });
 </script>
+
+{% schema %}
+{
+  "name": "Product slider",
+  "presets": [
+    {
+      "name": "Product slider"
+    }
+  ]
+}
+{% endschema %}
