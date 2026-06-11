@@ -5,19 +5,96 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/404
 {% endcomment %}
 
-<h1>{{ '404.title' | t }}</h1>
+<div class="template-404 page-width">
+  <div class="template-404__content">
 
-<p>
-  {{ '404.not_found' | t }}
-</p>
+    {% if section.settings.image != blank %}
+      <div class="template-404__image">
+        {{
+          section.settings.image
+          | image_url: width: 1000
+          | image_tag:
+            loading: 'lazy',
+            alt: section.settings.image.alt
+        }}
+      </div>
+    {% endif %}
 
-<a href="{{ routes.all_products_collection_url }}">
-  {{ '404.back_to_shopping' | t }}
-</a>
+    <h1 class="template-404__title">
+      {{ '404.title' | t }}
+    </h1>
+
+    <p class="template-404__text">
+      {{ '404.not_found' | t }}
+    </p>
+
+    <a
+      href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+      class="button"
+    >
+      {{ '404.back_to_shopping' | t }}
+    </a>
+
+  </div>
+</div>
+
+<style>
+  .template-404 {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .template-404__content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .template-404__image {
+    margin-bottom: 2rem;
+  }
+
+  .template-404__image img {
+    display: block;
+    max-width: 350px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .template-404__title {
+    margin: 0 0 1rem;
+  }
+
+  .template-404__text {
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+</style>
 
 {% schema %}
 {
   "name": "t:general.404",
-  "settings": []
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "404 image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Continue shopping"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ]
 }
 {% endschema %}
