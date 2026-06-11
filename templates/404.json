@@ -7,11 +7,15 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "404",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/360186651dcd4d4c370ec057bf379744.jpg",
+        "button_text": "Continue shopping",
+        "button_link": "shopify://collections"
+      }
     }
   },
   "order": [
