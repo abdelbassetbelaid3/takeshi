@@ -61,11 +61,63 @@
     "1778974593699db8a6": {
       "type": "apps",
       "settings": {}
+    },
+    "custom_collection_list_mMkL9t": {
+      "type": "custom-collection-list",
+      "blocks": {
+        "collection_6cD4Hc": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": ""
+          }
+        },
+        "collection_Rjd3z3": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": ""
+          }
+        },
+        "collection_RCykKL": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": ""
+          }
+        },
+        "collection_DwKdNh": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_6cD4Hc",
+        "collection_Rjd3z3",
+        "collection_RCykKL",
+        "collection_DwKdNh"
+      ],
+      "name": "Custom Collection List",
+      "settings": {
+        "heading": "Shop by Category",
+        "columns_desktop": 4,
+        "gap": 6,
+        "card_radius": 8,
+        "image_height": 480,
+        "title_size": 30,
+        "title_color": "#FFFFFF",
+        "title_outline": "#111111",
+        "overlay": 15
+      }
     }
   },
   "order": [
     "hero",
     "home_product_list_W4hegx",
-    "1778974593699db8a6"
+    "1778974593699db8a6",
+    "custom_collection_list_mMkL9t"
   ]
 }
