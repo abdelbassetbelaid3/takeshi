@@ -1,0 +1,347 @@
+{% schema %}
+{
+  "name": "Custom Collection List",
+  "tag": "section",
+  "class": "custom-collection-list-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 200,
+      "max": 700,
+      "step": 10,
+      "default": 480,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "title_outline",
+      "label": "Title outline",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Dark overlay",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 15,
+      "unit": "%"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image",
+          "info": "Leave empty to use the collection image."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom title",
+          "info": "Leave empty to use the collection name."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collection List",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .custom-collection-list {
+    width: 100%;
+  }
+
+  .custom-collection-list__heading {
+    margin: 0 0 24px;
+    text-align: center;
+  }
+
+  .custom-collection-list__grid {
+    display: grid;
+    grid-template-columns: repeat(
+      {{ section.settings.columns_desktop }},
+      minmax(0, 1fr)
+    );
+    gap: {{ section.settings.gap }}px;
+  }
+
+  .custom-collection-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: {{ section.settings.image_height }}px;
+    overflow: hidden;
+    border-radius: {{ section.settings.card_radius }}px;
+    text-decoration: none;
+    background: #1a1a1a;
+  }
+
+  .custom-collection-card__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .custom-collection-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(
+      0,
+      0,
+      0,
+      {{ section.settings.overlay | divided_by: 100.0 }}
+    );
+    z-index: 1;
+    transition: background 0.3s ease;
+  }
+
+  .custom-collection-card:hover .custom-collection-card__image {
+    transform: scale(1.04);
+  }
+
+  .custom-collection-card:hover::after {
+    background: rgba(0, 0, 0, 0.28);
+  }
+
+  .custom-collection-card__content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .custom-collection-card__title {
+    margin: 0;
+    color: {{ section.settings.title_color }};
+    font-size: {{ section.settings.title_size }}px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    /*
+      Thick outline similar to the reference image.
+    */
+    -webkit-text-stroke: 2px {{ section.settings.title_outline }};
+    paint-order: stroke fill;
+
+    text-shadow:
+      2px 2px 0 {{ section.settings.title_outline }},
+      -2px -2px 0 {{ section.settings.title_outline }},
+      2px -2px 0 {{ section.settings.title_outline }},
+      -2px 2px 0 {{ section.settings.title_outline }};
+  }
+
+  .custom-collection-card__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-collection-list__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: {{ section.settings.gap }}px;
+    }
+
+    .custom-collection-card {
+      height: 280px;
+    }
+
+    .custom-collection-card__content {
+      left: 10px;
+      right: 10px;
+      bottom: 14px;
+    }
+
+    .custom-collection-card__title {
+      font-size: 20px;
+      letter-spacing: 1px;
+      -webkit-text-stroke: 1.5px {{ section.settings.title_outline }};
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .custom-collection-card {
+      height: 230px;
+    }
+
+    .custom-collection-card__title {
+      font-size: 17px;
+    }
+  }
+</style>
+
+<div class="custom-collection-list page-width">
+
+  {% if section.settings.heading != blank %}
+    <h2 class="custom-collection-list__heading">
+      {{ section.settings.heading }}
+    </h2>
+  {% endif %}
+
+  <div class="custom-collection-list__grid">
+
+    {% for block in section.blocks %}
+
+      {% assign collection = block.settings.collection %}
+
+      {% if collection != blank %}
+
+        {% assign card_image = block.settings.image %}
+
+        {% if card_image == blank %}
+          {% assign card_image = collection.featured_image %}
+        {% endif %}
+
+        <a
+          href="{{ collection.url }}"
+          class="custom-collection-card"
+          {{ block.shopify_attributes }}
+        >
+
+          {% if card_image != blank %}
+
+            {{
+              card_image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'custom-collection-card__image',
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000, 1200',
+                sizes: '(min-width: 750px) 25vw, 50vw'
+            }}
+
+          {% else %}
+
+            <div class="custom-collection-card__placeholder">
+              {{ collection.title }}
+            </div>
+
+          {% endif %}
+
+          <div class="custom-collection-card__content">
+
+            <h3 class="custom-collection-card__title">
+              {% if block.settings.title != blank %}
+                {{ block.settings.title }}
+              {% else %}
+                {{ collection.title }}
+              {% endif %}
+            </h3>
+
+          </div>
+
+        </a>
+
+      {% else %}
+
+        <div
+          class="custom-collection-card"
+          {{ block.shopify_attributes }}
+        >
+          <div class="custom-collection-card__placeholder">
+            Select a collection
+          </div>
+        </div>
+
+      {% endif %}
+
+    {% endfor %}
+
+  </div>
+</div>
