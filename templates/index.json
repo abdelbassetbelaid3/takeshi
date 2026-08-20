@@ -108,9 +108,18 @@
         "card_radius": 8,
         "image_height": 480,
         "title_size": 30,
-        "title_color": "#FFFFFF",
+        "title_color": "#ffffff",
         "title_outline": "#111111",
         "overlay": 15
+      }
+    },
+    "home_product_list_BQG4aK": {
+      "type": "home-product-list",
+      "name": "Homepage Product Slider",
+      "settings": {
+        "title": "Featured Products",
+        "collection": "haikyuu",
+        "limit": 8
       }
     }
   },
@@ -118,6 +127,7 @@
     "hero",
     "home_product_list_W4hegx",
     "1778974593699db8a6",
-    "custom_collection_list_mMkL9t"
+    "custom_collection_list_mMkL9t",
+    "home_product_list_BQG4aK"
   ]
 }
