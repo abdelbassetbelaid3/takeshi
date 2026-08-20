@@ -11,10 +11,25 @@
   "sections": {
     "main": {
       "type": "page",
+      "disabled": true,
       "settings": {}
+    },
+    "thank_you_message_eBywWH": {
+      "type": "thank-you-message",
+      "name": "Thank You Message",
+      "settings": {
+        "heading": "✅ Merci pour votre commande !",
+        "subtitle": "سيتم الاتصال بك قريبًا لتأكيد الطلب.",
+        "message": "<p><strong>سيكون الاتصال من أحد الأرقام التالية:</strong></p>",
+        "phone_1": "0791774973",
+        "phone_2": "+213 YY YY YY YY YY",
+        "note": "يرجى الرد على المكالمة حتى نتمكن من تأكيد طلبكم وتجهيزه للشحن في أقرب وقت.",
+        "button_label": "Continue Shopping"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "thank_you_message_eBywWH"
   ]
 }
