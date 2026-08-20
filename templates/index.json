@@ -102,7 +102,7 @@
       ],
       "name": "Custom Collection List",
       "settings": {
-        "heading": "Shop by Category",
+        "heading": "",
         "columns_desktop": 4,
         "gap": 6,
         "card_radius": 8,
