@@ -18,7 +18,7 @@
             "desktop_image": "shopify://shop_images/landing_page-02.jpg",
             "mobile_image": "shopify://shop_images/landing_page-01.jpg",
             "image_alt": "",
-            "target_id": "order-with-cod",
+            "target_id": "",
             "desktop_width_percent": 100
           },
           "blocks": {}
@@ -94,7 +94,7 @@
             "desktop_image": "shopify://shop_images/landing_page-06.jpg",
             "mobile_image": "shopify://shop_images/landing_page-05.jpg",
             "image_alt": "",
-            "target_id": "leadform",
+            "target_id": "",
             "desktop_width_percent": 100
           },
           "blocks": {}
@@ -114,7 +114,7 @@
             "desktop_image": "shopify://shop_images/landing_page-04.jpg",
             "mobile_image": "shopify://shop_images/landing_page-03.jpg",
             "image_alt": "",
-            "target_id": "order-with-cod{{ closest.product.title }}",
+            "target_id": "",
             "desktop_width_percent": 100
           },
           "blocks": {}
@@ -134,7 +134,7 @@
             "desktop_image": "shopify://shop_images/landing_page-08.jpg",
             "mobile_image": "shopify://shop_images/landing_page-07.jpg",
             "image_alt": "",
-            "target_id": "leadform",
+            "target_id": "",
             "desktop_width_percent": 100
           },
           "blocks": {}
@@ -154,7 +154,7 @@
             "desktop_image": "shopify://shop_images/landing_page-10.jpg",
             "mobile_image": "shopify://shop_images/landing_page-09.jpg",
             "image_alt": "",
-            "target_id": "leadform",
+            "target_id": "",
             "desktop_width_percent": 100
           },
           "blocks": {}
