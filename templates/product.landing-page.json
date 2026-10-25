@@ -114,7 +114,7 @@
             "desktop_image": "shopify://shop_images/landing_page-04.jpg",
             "mobile_image": "shopify://shop_images/landing_page-03.jpg",
             "image_alt": "",
-            "target_id": "order-with-cod",
+            "target_id": "order-with-cod{{ closest.product.title }}",
             "desktop_width_percent": 100
           },
           "blocks": {}
