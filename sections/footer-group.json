@@ -13,6 +13,7 @@
   "sections": {
     "footer": {
       "type": "footer",
+      "disabled": true,
       "settings": {
         "logo": "shopify://shop_images/Asset_1.png",
         "about": "Write something about your brand.",

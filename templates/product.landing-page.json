@@ -9,6 +9,26 @@
  */
 {
   "sections": {
+    "179293885668fe0658": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_fcb29b8_gita7Y": {
+          "type": "ai_gen_block_fcb29b8",
+          "settings": {
+            "desktop_image": "shopify://shop_images/landing_page-02.jpg",
+            "mobile_image": "shopify://shop_images/landing_page-01.jpg",
+            "image_alt": "",
+            "target_id": "leadform",
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_fcb29b8_gita7Y"
+      ],
+      "settings": {}
+    },
     "main": {
       "type": "product",
       "blocks": {
@@ -62,11 +82,76 @@
     },
     "related_products": {
       "type": "related-products",
+      "disabled": true,
+      "settings": {}
+    },
+    "blocks_HyAdhz": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_fcb29b8_QTJ7GV": {
+          "type": "ai_gen_block_fcb29b8",
+          "settings": {
+            "desktop_image": "shopify://shop_images/landing_page-06.jpg",
+            "mobile_image": "shopify://shop_images/landing_page-05.jpg",
+            "image_alt": "",
+            "target_id": "leadform",
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_fcb29b8_QTJ7GV"
+      ],
+      "settings": {}
+    },
+    "blocks_WrDzK8": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_fcb29b8_PcyrFY": {
+          "type": "ai_gen_block_fcb29b8",
+          "settings": {
+            "desktop_image": "shopify://shop_images/landing_page-08.jpg",
+            "mobile_image": "shopify://shop_images/landing_page-07.jpg",
+            "image_alt": "",
+            "target_id": "leadform",
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_fcb29b8_PcyrFY"
+      ],
+      "settings": {}
+    },
+    "blocks_ThhEHe": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_fcb29b8_UtXdiD": {
+          "type": "ai_gen_block_fcb29b8",
+          "settings": {
+            "desktop_image": "shopify://shop_images/landing_page-10.jpg",
+            "mobile_image": "shopify://shop_images/landing_page-09.jpg",
+            "image_alt": "",
+            "target_id": "leadform",
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_fcb29b8_UtXdiD"
+      ],
       "settings": {}
     }
   },
   "order": [
+    "179293885668fe0658",
     "main",
-    "related_products"
+    "related_products",
+    "blocks_HyAdhz",
+    "blocks_WrDzK8",
+    "blocks_ThhEHe"
   ]
 }

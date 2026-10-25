@@ -13,6 +13,7 @@
   "sections": {
     "announcement_bar_qxWNBr": {
       "type": "announcement-bar",
+      "disabled": true,
       "name": "Announcement Bar",
       "settings": {
         "announcement_text": "Welcome to our store",
@@ -24,6 +25,7 @@
     },
     "header": {
       "type": "header",
+      "disabled": true,
       "settings": {
         "logo": "shopify://shop_images/2.png",
         "menu": "main-menu"
