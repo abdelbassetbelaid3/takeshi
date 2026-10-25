@@ -1,0 +1,72 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "product_media_FGcx3h": {
+          "type": "product-media",
+          "name": "Product media",
+          "settings": {},
+          "blocks": {}
+        },
+        "product_title_yLEM9i": {
+          "type": "product-title",
+          "name": "Product title",
+          "settings": {},
+          "blocks": {}
+        },
+        "product_variant_picker_4nedUV": {
+          "type": "product-variant-picker",
+          "name": "Variant picker",
+          "disabled": true,
+          "settings": {},
+          "blocks": {}
+        },
+        "webi_leadform_leadform_Q6iALw": {
+          "type": "shopify://apps/webi-leadform/blocks/leadform/3a127389-69cb-41d6-8e5c-10311613fcf7",
+          "settings": {
+            "leadformcodv3": "{{ closest.product }}"
+          }
+        },
+        "product_add_to_cart_iQr9Br": {
+          "type": "product-add-to-cart",
+          "name": "Add to cart",
+          "settings": {},
+          "blocks": {}
+        },
+        "product_description_7VjHkc": {
+          "type": "product-description",
+          "name": "Product description",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "product_media_FGcx3h",
+        "product_title_yLEM9i",
+        "product_variant_picker_4nedUV",
+        "webi_leadform_leadform_Q6iALw",
+        "product_add_to_cart_iQr9Br",
+        "product_description_7VjHkc"
+      ],
+      "settings": {}
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "related_products"
+  ]
+}
